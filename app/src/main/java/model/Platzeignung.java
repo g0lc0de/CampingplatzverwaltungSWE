@@ -1,4 +1,4 @@
-package bestand;
+package model;
 
 public enum Platzeignung {
 
