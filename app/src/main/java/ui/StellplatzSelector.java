@@ -37,7 +37,7 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		public final Class<?> payloadType;
 		public final String cmdText;
 
-		private Commands( String cmdText, Class<?> payloadType ) {
+		Commands( String cmdText, Class<?> payloadType ) {
 			this.cmdText = cmdText;
 			this.payloadType = payloadType;
 		}
@@ -59,15 +59,15 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		}
 	}
 
-	private int dimXY = 3;
+	private final int dimXY;
 	private List<IDepictable> stellplaetze;
-	private final HashMap<String, JButton> stellPlatzButtonMap = new HashMap<String, JButton>();
+	private final HashMap<String, JButton> stellPlatzButtonMap = new HashMap<>();
 	private JPanel pnl; // = new JPanel( new GridLayout(xy,xy) );
 	
 	
-	public StellplatzSelector( List<IDepictable> stellplaetze, ObservableComponent parentComponent ) {
+	public StellplatzSelector( List<IDepictable> stellplaetze) {
 		this.stellplaetze = stellplaetze;
-		parentComponent.addObserver(this);
+
 		if( stellplaetze.size() != 9 && stellplaetze.size() != 16 ) {
 			throw new IllegalArgumentException("The number of 'Stellplaetze' must be 9 or 16");
 		}

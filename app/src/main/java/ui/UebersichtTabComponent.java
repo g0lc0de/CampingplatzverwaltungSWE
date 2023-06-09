@@ -1,5 +1,6 @@
 package ui;
 
+import controller.UebersichtTabController;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
@@ -39,42 +40,29 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
     }
 
     public String text = "";
-    private List<IDepictable> stellplatzList = Arrays.asList(
-            new Stellplatz("1", false),
-            new Stellplatz("2", true),
-            new Stellplatz("3", false),
-            new Stellplatz("4", false),
-            new Stellplatz("5", true),
-            new Stellplatz("6", false),
-            new Stellplatz("7", false),
-            new Stellplatz("8", true),
-            new Stellplatz("9", false)
-    );
+    public List<IDepictable> stellplaetze;
+    private StellplatzSelector stellplatzSelector;
 
-    public UebersichtTabComponent() throws Exception {
+    public UebersichtTabComponent(List<IDepictable> stellplaetze) throws Exception {
+        this.stellplaetze = stellplaetze;
+
         JFrame frame = new JFrame();
-        UebersichtTabController controller = new UebersichtTabController(this);
-
         frame.setLayout(new GridLayout(1, 3));
 
-        StellplatzSelector stellplatzSelector = new StellplatzSelector(stellplatzList, this);
+        stellplatzSelector = new StellplatzSelector(this.stellplaetze);
+        frame.add(stellplatzSelector);
 
-        stellplatzSelector.addObserver(this);
-        frame.add(stellplatzSelector
-        );
+//        stellplatzSelector.addObserver(this);
+//        this.addObserver(stellplatzSelector);
+
 
         List<JPanel> stellbereichePanels = new ArrayList<>();
-
-
         for (int i = 0; i < 10; i++) {
             JPanel stellbereich = new JPanel(new BorderLayout());
             stellbereich.add(new JLabel("Stellbereich " + i), BorderLayout.NORTH);
             stellbereich.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
             stellbereichePanels.add(stellbereich);
         }
-
-
-
 
         JPanel extendedListHolder = new JPanel(new BorderLayout());
         extendedListHolder.add((new ExtendedListComponent()).createListComponent(stellbereichePanels), BorderLayout.NORTH);
@@ -88,7 +76,6 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
                 fireGUIEvent(new GUIEvent(this, Commands.TEXT_CHANGED, text));
             }
         });
-        addObserver(controller);
 
         frame.add(textField);
 
@@ -97,22 +84,18 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    public StellplatzSelector getStellplatzSelector() {
+        return stellplatzSelector;
+    }
+
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
-        System.out.println("Update:" + updateEvent.getData());
+        System.out.println("UpdateEventReceived TabComponent:" + updateEvent.getCmdText());
+//        fireUpdateEvent(updateEvent);
     }
 
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
-        System.out.println("Received from child:" + guiEvent.getCmd() + " " + guiEvent.getSource());
-        if(guiEvent.getCmd() == StellplatzSelector.Commands.PLACE_SELECTED){
-            Stellplatz stellplatz = (Stellplatz) stellplatzList.get(Integer.parseInt(guiEvent.getSource().toString())-1);
-            try {
-                stellplatz.setReserviert(!stellplatz.isReserviert());
-                fireUpdateEvent(new UpdateEvent(this, StellplatzSelector.Commands.UPDATE_PLACES));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        fireGUIEvent(guiEvent);
     }
 }
