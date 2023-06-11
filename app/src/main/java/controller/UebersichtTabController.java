@@ -1,34 +1,44 @@
 package controller;
 
-import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
-import model.Stellplatz;
+import model.bestand.Platzeignung;
+import model.bestand.Stellplatz;
+import model.bestand.VerfuegbareRessource;
 import ui.StellplatzSelector;
 import ui.UebersichtTabComponent;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class UebersichtTabController extends BaseController  implements IGUIEventListener {
 
     private UebersichtTabComponent component;
-    private List<IDepictable> stellplatzList = Arrays.asList(
-            new Stellplatz("1", false),
-            new Stellplatz("2", true),
-            new Stellplatz("3", false),
-            new Stellplatz("4", false),
-            new Stellplatz("5", true),
-            new Stellplatz("6", false),
-            new Stellplatz("7", false),
-            new Stellplatz("8", true),
-            new Stellplatz("9", false)
-    );
+
+    private List<IDepictable> stellplatzList;
 
     public UebersichtTabController() throws Exception {
+
+        List<Platzeignung> platzeignungen = new ArrayList<>();
+        platzeignungen.add(Platzeignung.AUTO);
+        platzeignungen.add(Platzeignung.WOHNWAGEN);
+
+        List<VerfuegbareRessource> verfuegbareRessources = new ArrayList<>();
+        verfuegbareRessources.add(VerfuegbareRessource.WASSER);
+
+        stellplatzList = Arrays.asList(
+                new Stellplatz("A1", 10, platzeignungen, verfuegbareRessources, true),
+                new Stellplatz("A2", 15, platzeignungen, verfuegbareRessources, false),
+                new Stellplatz("A3", 10, platzeignungen, verfuegbareRessources, true),
+                new Stellplatz("A4", 15, platzeignungen, verfuegbareRessources, false)
+        );
+
+        Stellplatz a = (Stellplatz) stellplatzList.get(0);
+        System.out.println(a);
 
         component = new UebersichtTabComponent(stellplatzList);
         component.addObserver(this);

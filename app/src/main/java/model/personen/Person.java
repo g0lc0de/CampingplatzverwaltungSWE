@@ -1,4 +1,4 @@
-package model;
+package model.personen;
 
 public class Person {
 

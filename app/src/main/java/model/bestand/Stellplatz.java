@@ -1,0 +1,91 @@
+package model.bestand;
+
+import de.dhbwka.swe.utils.model.Attribute;
+import de.dhbwka.swe.utils.model.IDepictable;
+import utils.AttributeUtilities;
+
+import java.util.List;
+
+public class Stellplatz implements IDepictable {
+	
+	public final static int ID = 0;
+	public final static int GROESSE = 1;
+	public final static int RESERVIERT = 2; // Just for testing purposes
+
+	private List<Platzeignung> platzeignungen;
+	private List<VerfuegbareRessource> verfuegbareRessourcen;
+	
+	private Attribute[] attributes = new Attribute[] {
+			new Attribute("ID", this, String.class, "", "unknown", true),
+			new Attribute("groesse", this, Double.class, "", "unknown", true),
+			new Attribute("reserviert", this, Boolean.class, false	, false, true),
+	};
+
+	public Stellplatz(String IDParam, double groesse, List<Platzeignung> platzeignungen, List<VerfuegbareRessource> verfuegbareRessourcen) throws Exception {
+		this(IDParam, groesse, platzeignungen, verfuegbareRessourcen, false);
+	}
+
+	public Stellplatz(String IDParam, double groesse, List<Platzeignung> platzeignungen, List<VerfuegbareRessource> verfuegbareRessourcen, boolean reserviert) throws Exception {
+		super();
+		this.attributes[Stellplatz.ID].setValue(IDParam);
+		this.attributes[Stellplatz.GROESSE].setValue(groesse);
+		this.attributes[Stellplatz.RESERVIERT].setValue(reserviert);
+
+		this.verfuegbareRessourcen = verfuegbareRessourcen;
+		this.platzeignungen = platzeignungen;
+	}
+
+	public void setReserviert(Boolean reserviert) throws Exception {
+		this.attributes[Stellplatz.RESERVIERT].setValue(reserviert);
+	}
+
+	public Boolean isReserviert() {
+		return (Boolean) this.attributes[RESERVIERT].getValue();
+	}
+
+	public void addPlatzeignung(Platzeignung neuePlatzeignung) {
+		System.out.printf("Add platzeignung: %s\n", neuePlatzeignung);
+
+		platzeignungen.add(neuePlatzeignung);
+	}
+
+	public void removePlatzeignung(Platzeignung entfernendePlatzeignung) {
+		platzeignungen.remove(entfernendePlatzeignung);
+	}
+
+	public List<Platzeignung> getPlatzeignungen() {
+		return platzeignungen;
+	}
+
+	public void addVerfuegbareRessourcen(VerfuegbareRessource neuePlatzeignung) {
+		verfuegbareRessourcen.add(neuePlatzeignung);
+	}
+
+	public void removeVerfuegbareRessourcen(VerfuegbareRessource entfernendePlatzeignung) {
+		verfuegbareRessourcen.remove(entfernendePlatzeignung);
+	}
+
+	public List<VerfuegbareRessource> getVerfuegbareRessourcen() {
+		return verfuegbareRessourcen;
+	}
+
+	public Attribute[] getAttributeArray() {
+		return this.attributes;
+	}
+
+	public String getElementID() {
+		return (String) this.attributes[ID].getValue();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder objectStringBuilder = new StringBuilder();
+		objectStringBuilder.append("Stellplatz: {\n");
+		objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(this.attributes));
+		objectStringBuilder.append(String.format("\tPlatzeignung: %s\n", platzeignungen));
+		objectStringBuilder.append(String.format("\tVerfuegbareRessourcen: %s\n", verfuegbareRessourcen));
+		objectStringBuilder.append("}");
+
+		return objectStringBuilder.toString();
+	}
+}

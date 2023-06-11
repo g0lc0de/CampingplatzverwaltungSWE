@@ -1,17 +1,14 @@
 package ui;
 
-import controller.UebersichtTabController;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Stellplatz;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UebersichtTabComponent extends ObservableComponent implements IUpdateEventListener, IGUIEventListener {
