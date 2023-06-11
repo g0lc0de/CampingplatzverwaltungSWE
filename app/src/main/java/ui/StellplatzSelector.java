@@ -19,7 +19,7 @@ import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Stellplatz;
+import model.bestand.Stellplatz;
 
 public class StellplatzSelector extends ObservableComponent implements IUpdateEventListener{
 	
@@ -68,7 +68,7 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 	public StellplatzSelector( List<IDepictable> stellplaetze) {
 		this.stellplaetze = stellplaetze;
 
-		if( stellplaetze.size() != 9 && stellplaetze.size() != 16 ) {
+		if( stellplaetze.size() != 4 && stellplaetze.size() != 9 && stellplaetze.size() != 16 ) {
 			throw new IllegalArgumentException("The number of 'Stellplaetze' must be 9 or 16");
 		}
 		this.dimXY = (int)(Math.sqrt(stellplaetze.size()));
