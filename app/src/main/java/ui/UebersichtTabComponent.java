@@ -40,21 +40,21 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
     }
 
     public String text = "";
-    public List<IDepictable> stellplaetze;
-    private StellplatzSelector stellplatzSelector;
 
     public UebersichtTabComponent(List<IDepictable> stellplaetze) throws Exception {
-        this.stellplaetze = stellplaetze;
 
         JFrame frame = new JFrame();
         frame.setLayout(new GridLayout(1, 3));
 
-        stellplatzSelector = new StellplatzSelector(this.stellplaetze);
-        frame.add(stellplatzSelector);
+        JPanel mapPanel = new JPanel(new BorderLayout());
+        JButton oberbereichNordPanel = new JButton("Oberbereich Nord");
+        mapPanel.add(oberbereichNordPanel, BorderLayout.NORTH);
+        JButton oberbereichMittePanel = new JButton("Oberbereich Mitte");
+        mapPanel.add(oberbereichMittePanel, BorderLayout.CENTER);
+        JButton oberbereichSuedPanel = new JButton("Oberbereich Süd");
+        mapPanel.add(oberbereichSuedPanel, BorderLayout.SOUTH);
 
-//        stellplatzSelector.addObserver(this);
-//        this.addObserver(stellplatzSelector);
-
+        frame.add(mapPanel);
 
         List<JPanel> stellbereichePanels = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -82,10 +82,6 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         frame.setSize(1080, 720);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
-
-    public StellplatzSelector getStellplatzSelector() {
-        return stellplatzSelector;
     }
 
     @Override

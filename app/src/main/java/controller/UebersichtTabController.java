@@ -34,8 +34,6 @@ public class UebersichtTabController extends BaseController  implements IGUIEven
         component.addObserver(this);
         addObserver(component);
 
-        component.getStellplatzSelector().addObserver(this);
-        addObserver(component.getStellplatzSelector());
     }
 
 
