@@ -7,6 +7,7 @@ import de.dhbwka.swe.utils.model.IDepictable;
 import model.Stellplatz;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,7 +45,8 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
     public UebersichtTabComponent(List<IDepictable> stellplaetze) throws Exception {
 
         JFrame frame = new JFrame();
-        frame.setLayout(new GridLayout(1, 3));
+        GridLayout gridLayout = new GridLayout(1, 3);
+        frame.setLayout(gridLayout);
 
         JPanel mapPanel = new JPanel(new BorderLayout());
         JButton oberbereichNordPanel = new JButton("Oberbereich Nord");
@@ -56,28 +58,28 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
 
         frame.add(mapPanel);
 
-        List<JPanel> stellbereichePanels = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            JPanel stellbereich = new JPanel(new BorderLayout());
-            stellbereich.add(new JLabel("Stellbereich " + i), BorderLayout.NORTH);
-            stellbereich.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
-            stellbereichePanels.add(stellbereich);
+        List<JPanel> oberbereichePanels = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            JPanel oberbereichPanel = new JPanel(new BorderLayout());
+            oberbereichPanel.add(new JLabel("Oberbereich " + i), BorderLayout.NORTH);
+            oberbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
+            oberbereichePanels.add(oberbereichPanel);
         }
 
-        JPanel extendedListHolder = new JPanel(new BorderLayout());
-        extendedListHolder.add((new ExtendedListComponent()).createListComponent(stellbereichePanels), BorderLayout.NORTH);
-        frame.add(extendedListHolder);
+        JPanel middlePanelHolder = new JPanel(new BorderLayout());
+        middlePanelHolder.add((new ExtendedListComponent()).createListComponent(oberbereichePanels), BorderLayout.NORTH);
+        JPanel buttonPanel = new JPanel(new GridLayout(4,1));
+        buttonPanel.add(new JButton("Buchung anlegen"));
+        buttonPanel.add(new JButton("Buchung einseihen"));
+        buttonPanel.add(new JButton("Mitarbeiter ansehen"));
+        buttonPanel.add(new JButton("Daten verwalten"));
+        middlePanelHolder.add(buttonPanel);
+        frame.add(middlePanelHolder);
 
-        JTextField textField = new JTextField(10);
-        textField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                text = textField.getText();
-                fireGUIEvent(new GUIEvent(this, Commands.TEXT_CHANGED, text));
-            }
-        });
 
-        frame.add(textField);
+        OberbereichDetailsComponent detailsComponent = new OberbereichDetailsComponent();
+        frame.add(detailsComponent.createDetailComponent(), BorderLayout.NORTH);
+
 
         frame.setSize(1080, 720);
         frame.setVisible(true);
