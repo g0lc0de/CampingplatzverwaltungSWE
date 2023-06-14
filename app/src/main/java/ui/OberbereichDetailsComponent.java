@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OberbereichDetailsComponent extends ObservableComponent {
-    public JPanel createDetailComponent() {
+    public static JPanel createDetailComponent() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
@@ -43,7 +43,7 @@ public class OberbereichDetailsComponent extends ObservableComponent {
             stellbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
             stellbereichPanels.add(stellbereichPanel);
         }
-        mainPanel.add(new ExtendedListComponent().createListComponent(stellbereichPanels), BorderLayout.CENTER);
+        mainPanel.add(ExtendedListComponent.createListComponent(stellbereichPanels), BorderLayout.CENTER);
 
         return mainPanel;
     }

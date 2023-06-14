@@ -15,7 +15,7 @@ public class ExtendedListComponent extends ObservableComponent {
 
     public static final int ROWS = 5;
 
-    public JScrollPane createListComponent(List<JPanel> panels) {
+    public static JScrollPane createListComponent(List<JPanel> panels) {
         JPanel mainList = new JPanel(new GridBagLayout());
 
         //TODO: Use BoxLayout

@@ -66,8 +66,11 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
             oberbereichePanels.add(oberbereichPanel);
         }
 
-        JPanel middlePanelHolder = new JPanel(new BorderLayout());
-        middlePanelHolder.add((new ExtendedListComponent()).createListComponent(oberbereichePanels), BorderLayout.NORTH);
+        JPanel middlePanelHolder = new JPanel(new GridLayout(2,1));
+        JPanel listHolder = new JPanel(new BorderLayout());
+        listHolder.add(ExtendedListComponent.createListComponent(oberbereichePanels), BorderLayout.CENTER);
+        listHolder.setBorder(new LineBorder(Color.pink));
+        middlePanelHolder.add(HeaderComponent.createHeaderComponent(listHolder, "Oberbereiche"));
         JPanel buttonPanel = new JPanel(new GridLayout(4,1));
         buttonPanel.add(new JButton("Buchung anlegen"));
         buttonPanel.add(new JButton("Buchung einseihen"));
@@ -76,9 +79,7 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         middlePanelHolder.add(buttonPanel);
         frame.add(middlePanelHolder);
 
-
-        OberbereichDetailsComponent detailsComponent = new OberbereichDetailsComponent();
-        frame.add(detailsComponent.createDetailComponent(), BorderLayout.NORTH);
+        frame.add(OberbereichDetailsComponent.createDetailComponent(), BorderLayout.NORTH);
 
 
         frame.setSize(1080, 720);
