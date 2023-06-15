@@ -1,18 +1,15 @@
 package ui;
 
-import controller.UebersichtTabController;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Stellplatz;
+import model.Oberbereich;
+import util.StaticSourceNames;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class UebersichtTabComponent extends ObservableComponent implements IUpdateEventListener, IGUIEventListener {
@@ -39,10 +36,23 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
             return payloadType;
         }
     }
+    private OberbereichDetailsComponent oberbereichDetailsComponent;
+    private ExtendedListComponent oberbereichListComponent = new ExtendedListComponent(StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST);
 
-    public String text = "";
+    public ExtendedListComponent getOberbereichListComponent() {
+        return oberbereichListComponent;
+    }
 
-    public UebersichtTabComponent(List<IDepictable> stellplaetze) throws Exception {
+    public OberbereichDetailsComponent getOberbereichDetailsComponent() {
+        return oberbereichDetailsComponent;
+    }
+
+    private List<IDepictable> oberbereiche;
+
+    public UebersichtTabComponent(List<IDepictable> oberbereiche) throws Exception {
+
+        this.oberbereiche = oberbereiche;
+        this.oberbereichDetailsComponent = new OberbereichDetailsComponent(oberbereiche.get(0));
 
         JFrame frame = new JFrame();
         GridLayout gridLayout = new GridLayout(1, 3);
@@ -59,16 +69,16 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         frame.add(mapPanel);
 
         List<JPanel> oberbereichePanels = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < oberbereiche.size(); i++) {
             JPanel oberbereichPanel = new JPanel(new BorderLayout());
-            oberbereichPanel.add(new JLabel("Oberbereich " + i), BorderLayout.NORTH);
+            oberbereichPanel.add(new JLabel("Oberbereich " + oberbereiche.get(i).getAttributeArray()[Oberbereich.NAME].getValue()), BorderLayout.NORTH);
             oberbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
             oberbereichePanels.add(oberbereichPanel);
         }
 
         JPanel middlePanelHolder = new JPanel(new GridLayout(2,1));
         JPanel listHolder = new JPanel(new BorderLayout());
-        listHolder.add(ExtendedListComponent.createListComponent(oberbereichePanels), BorderLayout.CENTER);
+        listHolder.add(oberbereichListComponent.createListComponent(oberbereichePanels), BorderLayout.CENTER);
         listHolder.setBorder(new LineBorder(Color.pink));
         middlePanelHolder.add(HeaderComponent.createHeaderComponent(listHolder, "Oberbereiche"));
         JPanel buttonPanel = new JPanel(new GridLayout(4,1));
@@ -79,7 +89,7 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         middlePanelHolder.add(buttonPanel);
         frame.add(middlePanelHolder);
 
-        frame.add(OberbereichDetailsComponent.createDetailComponent(), BorderLayout.NORTH);
+        frame.add(oberbereichDetailsComponent.createDetailComponent(), BorderLayout.NORTH);
 
 
         frame.setSize(1080, 720);

@@ -6,17 +6,18 @@ import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
+import model.Oberbereich;
 import model.Stellplatz;
-import ui.StellplatzSelector;
-import ui.UebersichtTabComponent;
+import ui.*;
+import util.StaticSourceNames;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class UebersichtTabController extends BaseController  implements IGUIEventListener {
+public class UebersichtTabController extends BaseController implements IGUIEventListener {
 
     private UebersichtTabComponent component;
-    private List<IDepictable> stellplatzList = Arrays.asList(
+    private List<Stellplatz> stellplatzList = Arrays.asList(
             new Stellplatz("1", false),
             new Stellplatz("2", true),
             new Stellplatz("3", false),
@@ -28,14 +29,45 @@ public class UebersichtTabController extends BaseController  implements IGUIEven
             new Stellplatz("9", false)
     );
 
+    private List<Stellplatz> stellplatzList2 = Arrays.asList(
+            new Stellplatz("11", false),
+            new Stellplatz("21", true),
+            new Stellplatz("31", false),
+            new Stellplatz("41", false),
+            new Stellplatz("51", true),
+            new Stellplatz("61", false),
+            new Stellplatz("71", false),
+            new Stellplatz("81", true),
+            new Stellplatz("91", false)
+    );
+
+    private List<IDepictable> oberbereichList = Arrays.asList(
+            new Oberbereich("1", "Lorem ipsum", "O1", stellplatzList),
+            new Oberbereich("2", "Lorem ipsum a", "O2", stellplatzList2),
+            new Oberbereich("3", "Lorem ipsum aa", "O3", stellplatzList),
+            new Oberbereich("4", "Lorem ipsum aaa", "O4", stellplatzList2)
+    );
+
+    private ExtendedListComponent oberbereichListComponent;
+    private ExtendedListComponent stellbereicheListComponent;
+    private OberbereichDetailsComponent oberbereichDetailsComponent;
     public UebersichtTabController() throws Exception {
 
-        component = new UebersichtTabComponent(stellplatzList);
+        component = new UebersichtTabComponent(oberbereichList);
         component.addObserver(this);
         addObserver(component);
 
-    }
+        oberbereichListComponent = component.getOberbereichListComponent();
+        oberbereichListComponent.addObserver(this);
 
+        oberbereichDetailsComponent = component.getOberbereichDetailsComponent();
+        oberbereichDetailsComponent.addObserver(this);
+        addObserver(oberbereichDetailsComponent);
+
+        stellbereicheListComponent = component.getOberbereichDetailsComponent().getStellbereicheListComponent();
+        stellbereicheListComponent.addObserver(this);
+        addObserver(stellbereicheListComponent);
+    }
 
 
     @Override
@@ -43,14 +75,12 @@ public class UebersichtTabController extends BaseController  implements IGUIEven
         System.out.println("Received from child:" + guiEvent.getCmd() + " " + guiEvent.getSource());
         System.err.println("GUIEventData:" + guiEvent.getData());
 
-        if(guiEvent.getCmd() == StellplatzSelector.Commands.PLACE_SELECTED){
-            Stellplatz stellplatz = (Stellplatz) stellplatzList.get(Integer.parseInt(guiEvent.getSource().toString())-1);
-
-            try {
-                stellplatz.setReserviert(!stellplatz.isReserviert());
-                fireUpdateEvent(new UpdateEvent(this, StellplatzSelector.Commands.UPDATE_PLACES));
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (guiEvent.getCmd() == ExtendedListComponent.Commands.ITEM_SELECTED){
+            System.out.println( oberbereichListComponent);
+            if(guiEvent.getSource() == StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST){
+                Oberbereich selected = (Oberbereich) oberbereichList.get((int)guiEvent.getData());
+                System.out.println("Test");
+                fireUpdateEvent(new UpdateEvent(this, OberbereichDetailsComponent.Commands.OBERBEREICH_SELECTED, selected));
             }
         }
 //        fireUpdateEvent(new UpdateEvent(this,UebersichtTabComponent.Commands.TEXT_CHANGED, guiEvent.getData()));
