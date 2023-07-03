@@ -20,7 +20,7 @@ import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Stellplatz;
+import model.CampingSpace;
 
 public class CampingSpaceSelector extends ObservableComponent implements IUpdateEventListener{
 	
@@ -115,7 +115,7 @@ public class CampingSpaceSelector extends ObservableComponent implements IUpdate
 			if( attArray != null ) {
 				// get the button
 				JButton button = stellPlatzButtonMap.get(attArray[0].getValue() );
-				if( ((Boolean)attArray[Stellplatz.RESERVIERT].getValue()) == true ) {
+				if( ((Boolean)attArray[CampingSpace.RESERVIERT].getValue()) == true ) {
 					button.setBackground(Color.red);
 				}
 				else {

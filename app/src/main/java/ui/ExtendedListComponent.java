@@ -6,11 +6,10 @@ import de.dhbwka.swe.utils.event.IUpdateEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Stellplatz;
+import model.CampingSpace;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -57,6 +56,7 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
     private String sourceName;
     private int selected = -1;
     private List<IDepictable> iDepictables;
+    private List<Runnable> mouseEventFunctions = new ArrayList<>();
 
     public String getSourceName() {
         return sourceName;
@@ -73,8 +73,16 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
 
     public void selectItem(int position) {
         selected = position;
-        subareaPanels.forEach(jPanel -> jPanel.setBorder(null));
-        subareaPanels.get(position).setBorder(new LineBorder(Color.BLUE));
+        highlightPanel(position);
+    }
+
+    private void highlightPanel(int position){
+        highlightPanel(subareaPanels.get(position));
+    }
+
+    private void highlightPanel(JPanel panel){
+        subareaPanels.forEach(jPanel -> jPanel.setBackground(null));
+        panel.setBackground(Color.red);
     }
 
     public ExtendedListComponent addSourceName(String sourceName){
@@ -95,6 +103,10 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
         return this;
     }
 
+    public void addMoveEventFunction(Runnable runnable){
+        mouseEventFunctions.add(runnable);
+    }
+
     public ExtendedListComponent build() throws Exception {
         this.setLayout(new GridBagLayout());
         System.out.println("List received:" + iDepictables.toString());
@@ -113,7 +125,7 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
         int i = 0;
         for (IDepictable stellbereich : iDepictables) {
             JPanel subareaPanel = new JPanel(new BorderLayout());
-            JLabel nameLabel = new JLabel("Stellbereich " + stellbereich.getAttributeArray()[Stellplatz.ID].getValue());
+            JLabel nameLabel = new JLabel("Stellbereich " + stellbereich.getAttributeArray()[CampingSpace.ID].getValue());
             subareaPanel.add(nameLabel, BorderLayout.NORTH);
             subareaPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
             int finalI = i;
@@ -122,8 +134,8 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("clicked" + finalI);
                     fireGUIEvent(new GUIEvent(sourceName, ExtendedListComponent.Commands.ITEM_SELECTED, finalI));
-                    subareaPanels.forEach(jPanel -> jPanel.setBorder(null));
-                    subareaPanel.setBorder(new LineBorder(Color.BLUE, 2));
+                    highlightPanel(subareaPanel);
+                    mouseEventFunctions.forEach(Runnable::run);
                 }
             });
             subareaPanels.add(subareaPanel);

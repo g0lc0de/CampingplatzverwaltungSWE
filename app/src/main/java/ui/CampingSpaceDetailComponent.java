@@ -5,7 +5,7 @@ import de.dhbwka.swe.utils.event.IUpdateEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Stellplatz;
+import model.CampingSpace;
 import util.UserInterfaceUtils;
 
 import javax.swing.*;
@@ -48,7 +48,7 @@ public class CampingSpaceDetailComponent extends ObservableComponent implements 
 
     public CampingSpaceDetailComponent(IDepictable iDepictable) {
         this.subarea = iDepictable;
-        subareaNameLabel = new JLabel((String) subarea.getAttributeArray()[Stellplatz.ID].getValue());
+        subareaNameLabel = new JLabel((String) subarea.getAttributeArray()[CampingSpace.ID].getValue());
         subareaDescLabel = new JLabel("");
     }
 

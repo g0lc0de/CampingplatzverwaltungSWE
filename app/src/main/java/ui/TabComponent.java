@@ -1,11 +1,10 @@
 package ui;
 
 import controller.TabController;
-import controller.UebersichtTabController;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Oberbereich;
-import model.Stellplatz;
+import model.CampingArea;
+import model.CampingSpace;
 
 import javax.swing.*;
 import java.util.Arrays;
@@ -13,53 +12,53 @@ import java.util.List;
 
 public class TabComponent extends ObservableComponent {
     private TabController controller;
-    private List<Stellplatz> stellplatzList = Arrays.asList(
-            new Stellplatz("1", false),
-            new Stellplatz("2", true),
-            new Stellplatz("3a", false),
-            new Stellplatz("4", false),
-            new Stellplatz("5", true),
-            new Stellplatz("6a", false),
-            new Stellplatz("7", false),
-            new Stellplatz("8", true),
-            new Stellplatz("9a", false)
+    private List<CampingSpace> campingSpaceList = Arrays.asList(
+            new CampingSpace("1", false),
+            new CampingSpace("2", true),
+            new CampingSpace("3a", false),
+            new CampingSpace("4", false),
+            new CampingSpace("5", true),
+            new CampingSpace("6a", false),
+            new CampingSpace("7", false),
+            new CampingSpace("8", true),
+            new CampingSpace("9a", false)
     );
 
     private List<IDepictable> iDepictableList = Arrays.asList(
-            new Stellplatz("1", false),
-            new Stellplatz("2", true),
-            new Stellplatz("3a", false),
-            new Stellplatz("4", false),
-            new Stellplatz("5", true),
-            new Stellplatz("6a", false),
-            new Stellplatz("7", false),
-            new Stellplatz("8", true),
-            new Stellplatz("9a", false)
+            new CampingSpace("1", false),
+            new CampingSpace("2", true),
+            new CampingSpace("3a", false),
+            new CampingSpace("4", false),
+            new CampingSpace("5", true),
+            new CampingSpace("6a", false),
+            new CampingSpace("7", false),
+            new CampingSpace("8", true),
+            new CampingSpace("9a", false)
     );
 
-    private List<Stellplatz> stellplatzList2 = Arrays.asList(
-            new Stellplatz("11", false),
-            new Stellplatz("21", true),
-            new Stellplatz("31", false),
-            new Stellplatz("41", false),
-            new Stellplatz("51", true)
+    private List<CampingSpace> campingSpaceList2 = Arrays.asList(
+            new CampingSpace("11", false),
+            new CampingSpace("21", true),
+            new CampingSpace("31", false),
+            new CampingSpace("41", false),
+            new CampingSpace("51", true)
     );
 
     private List<IDepictable> oberbereichList = Arrays.asList(
-            new Oberbereich("1", "Lorem ipsum", "O1", stellplatzList),
-            new Oberbereich("2", "Lorem ipsum a", "O2", stellplatzList2),
-            new Oberbereich("3", "Lorem ipsum aa", "O3", stellplatzList),
-            new Oberbereich("4", "Lorem ipsum aaa", "O4", stellplatzList2)
+            new CampingArea("1", "Lorem ipsum", "O1", campingSpaceList),
+            new CampingArea("2", "Lorem ipsum a", "O2", campingSpaceList2),
+            new CampingArea("3", "Lorem ipsum aa", "O3", campingSpaceList),
+            new CampingArea("4", "Lorem ipsum aaa", "O4", campingSpaceList2)
     );
 
-    private UebersichtTabComponent overviewTabComponent;
+    private OverviewTabComponent overviewTabComponent;
     private SubareasTabComponent subareasTabComponent;
 
-    public UebersichtTabComponent getOverviewTabComponent() {
+    public OverviewTabComponent getOverviewTabComponent() {
         return overviewTabComponent;
     }
 
-    public void setOverviewTabComponent(UebersichtTabComponent overviewTabComponent) {
+    public void setOverviewTabComponent(OverviewTabComponent overviewTabComponent) {
         this.overviewTabComponent = overviewTabComponent;
     }
 
@@ -71,10 +70,16 @@ public class TabComponent extends ObservableComponent {
         this.subareasTabComponent = subareasTabComponent;
     }
 
+    private JTabbedPane tabbedPane;
+
+    public JTabbedPane getTabbedPane() {
+        return tabbedPane;
+    }
+
     public void init(){
         JFrame frame = new JFrame();
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
         tabbedPane.add("Übersicht", overviewTabComponent);
         tabbedPane.add("Stellbereiche", subareasTabComponent);
         frame.add(tabbedPane);

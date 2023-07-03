@@ -3,16 +3,14 @@ package ui;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Oberbereich;
 import util.StaticSourceNames;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class UebersichtTabComponent extends ObservableComponent implements IUpdateEventListener, IGUIEventListener {
+public class OverviewTabComponent extends ObservableComponent implements IUpdateEventListener, IGUIEventListener {
 
     public enum Commands implements EventCommand {
 
@@ -36,23 +34,23 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
             return payloadType;
         }
     }
-    private OberbereichDetailsComponent oberbereichDetailsComponent;
+    private CampingAreaDetailComponent campingAreaDetailComponent;
     private ExtendedListComponent oberbereichListComponent = new ExtendedListComponent();
 
     public ExtendedListComponent getOberbereichListComponent() {
         return oberbereichListComponent;
     }
 
-    public OberbereichDetailsComponent getOberbereichDetailsComponent() {
-        return oberbereichDetailsComponent;
+    public CampingAreaDetailComponent getOberbereichDetailsComponent() {
+        return campingAreaDetailComponent;
     }
 
     private List<IDepictable> oberbereiche;
 
-    public UebersichtTabComponent(List<IDepictable> oberbereiche) throws Exception {
+    public OverviewTabComponent(List<IDepictable> oberbereiche) throws Exception {
 
         this.oberbereiche = oberbereiche;
-        this.oberbereichDetailsComponent = new OberbereichDetailsComponent(oberbereiche.get(0));
+        this.campingAreaDetailComponent = new CampingAreaDetailComponent(oberbereiche.get(0));
 
         oberbereichListComponent.addSourceName(StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST);
         oberbereichListComponent.addIDepictables(oberbereiche);
@@ -83,7 +81,7 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         middlePanelHolder.add(buttonPanel);
         this.add(middlePanelHolder);
 
-        this.add(oberbereichDetailsComponent.createDetailComponent(), BorderLayout.NORTH);
+        this.add(campingAreaDetailComponent.createDetailComponent(), BorderLayout.NORTH);
     }
 
     @Override

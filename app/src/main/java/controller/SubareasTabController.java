@@ -5,7 +5,7 @@ import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
-import model.Stellplatz;
+import model.CampingSpace;
 import ui.CampingSpaceDetailComponent;
 import ui.ExtendedListComponent;
 import ui.CampingSpaceSelector;
@@ -26,15 +26,15 @@ public class SubareasTabController  extends BaseController implements IGUIEventL
     }
 
     private List<IDepictable> stellplatzList = Arrays.asList(
-            new Stellplatz("1", false),
-            new Stellplatz("2", true),
-            new Stellplatz("3a", false),
-            new Stellplatz("4", false),
-            new Stellplatz("5", true),
-            new Stellplatz("6a", false),
-            new Stellplatz("7", false),
-            new Stellplatz("8", true),
-            new Stellplatz("9a", false)
+            new CampingSpace("1", false),
+            new CampingSpace("2", true),
+            new CampingSpace("3a", false),
+            new CampingSpace("4", false),
+            new CampingSpace("5", true),
+            new CampingSpace("6a", false),
+            new CampingSpace("7", false),
+            new CampingSpace("8", true),
+            new CampingSpace("9a", false)
     );
 
     private ExtendedListComponent campingSpacesList;

@@ -1,9 +1,10 @@
 package ui;
 
+import controller.TabController;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Oberbereich;
+import model.CampingArea;
 import util.StaticSourceNames;
 import util.UserInterfaceUtils;
 
@@ -12,7 +13,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.List;
 
-public class OberbereichDetailsComponent extends ObservableComponent implements IUpdateEventListener {
+public class CampingAreaDetailComponent extends ObservableComponent implements IUpdateEventListener {
 
     IDepictable oberbereich;
     JLabel oberbereichNameLabel;
@@ -21,17 +22,17 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
 
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
-        oberbereich = (Oberbereich) updateEvent.getData();
+        oberbereich = (CampingArea) updateEvent.getData();
         System.out.println(oberbereich);
-        this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[Oberbereich.STELLPLATZLIST].getValue();
+        this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[CampingArea.STELLPLATZLIST].getValue();
         System.out.println(stellplatzList);
         try {
             stellbereicheListComponent.removePanels().build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        oberbereichNameLabel.setText((String) oberbereich.getAttributeArray()[Oberbereich.NAME].getValue());
-        oberbereichBeschreibungLabel.setText((String) oberbereich.getAttributeArray()[Oberbereich.LAGEBESCHREIBUNG].getValue());
+        oberbereichNameLabel.setText((String) oberbereich.getAttributeArray()[CampingArea.NAME].getValue());
+        oberbereichBeschreibungLabel.setText((String) oberbereich.getAttributeArray()[CampingArea.LAGEBESCHREIBUNG].getValue());
     }
 
     public enum Commands implements EventCommand {
@@ -57,11 +58,11 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
         }
     }
 
-    public OberbereichDetailsComponent(IDepictable attributes) {
+    public CampingAreaDetailComponent(IDepictable attributes) {
         this.oberbereich = attributes;
-        this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[Oberbereich.STELLPLATZLIST].getValue();
-        this.oberbereichNameLabel = new JLabel((String) oberbereich.getAttributeArray()[Oberbereich.NAME].getValue());
-        this.oberbereichBeschreibungLabel = new JLabel((String) oberbereich.getAttributeArray()[Oberbereich.LAGEBESCHREIBUNG].getValue());
+        this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[CampingArea.STELLPLATZLIST].getValue();
+        this.oberbereichNameLabel = new JLabel((String) oberbereich.getAttributeArray()[CampingArea.NAME].getValue());
+        this.oberbereichBeschreibungLabel = new JLabel((String) oberbereich.getAttributeArray()[CampingArea.LAGEBESCHREIBUNG].getValue());
     }
 
     private ExtendedListComponent stellbereicheListComponent = new ExtendedListComponent();
@@ -97,6 +98,10 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
 
         stellbereicheListComponent.addSourceName(StaticSourceNames.OBERBEREICH_DETAILS_COMPONENT);
         stellbereicheListComponent.addIDepictables(stellplatzList);
+
+        stellbereicheListComponent.addMoveEventFunction(() -> {
+            TabController.getInstance().switchPage(1);
+        });
 
         mainPanel.add(stellbereicheListComponent.build(), BorderLayout.CENTER);
 

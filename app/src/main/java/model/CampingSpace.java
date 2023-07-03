@@ -3,7 +3,7 @@ package model;
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
 
-public class Stellplatz implements IDepictable {
+public class CampingSpace implements IDepictable {
 	
 	public final static int ID = 0;
 	public final static int RESERVIERT = 1;
@@ -18,9 +18,9 @@ public class Stellplatz implements IDepictable {
 	private String iD;
 	private Boolean reserviert;
 	
-	private Stellplatz() {}
+	private CampingSpace() {}
 	
-	public Stellplatz(String iD, Boolean reserviert) throws Exception {
+	public CampingSpace(String iD, Boolean reserviert) throws Exception {
 		super();
 		this.attributes[ID].setValue(iD);
 		this.attributes[RESERVIERT].setValue(reserviert);
