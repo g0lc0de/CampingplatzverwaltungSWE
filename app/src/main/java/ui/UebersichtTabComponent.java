@@ -57,9 +57,8 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         oberbereichListComponent.addSourceName(StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST);
         oberbereichListComponent.addIDepictables(oberbereiche);
 
-        JFrame frame = new JFrame();
         GridLayout gridLayout = new GridLayout(1, 3);
-        frame.setLayout(gridLayout);
+        this.setLayout(gridLayout);
 
         JPanel mapPanel = new JPanel(new BorderLayout());
         JButton oberbereichNordPanel = new JButton("Oberbereich Nord");
@@ -69,7 +68,7 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         JButton oberbereichSuedPanel = new JButton("Oberbereich Süd");
         mapPanel.add(oberbereichSuedPanel, BorderLayout.SOUTH);
 
-        frame.add(mapPanel);
+        this.add(mapPanel);
 
         JPanel middlePanelHolder = new JPanel(new GridLayout(2,1));
         JPanel listHolder = new JPanel(new BorderLayout());
@@ -82,14 +81,9 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         buttonPanel.add(new JButton("Mitarbeiter ansehen"));
         buttonPanel.add(new JButton("Daten verwalten"));
         middlePanelHolder.add(buttonPanel);
-        frame.add(middlePanelHolder);
+        this.add(middlePanelHolder);
 
-        frame.add(oberbereichDetailsComponent.createDetailComponent(), BorderLayout.NORTH);
-
-
-        frame.setSize(1080, 720);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.add(oberbereichDetailsComponent.createDetailComponent(), BorderLayout.NORTH);
     }
 
     @Override

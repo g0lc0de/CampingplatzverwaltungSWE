@@ -1,5 +1,6 @@
 package ui;
 
+import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import util.StaticSourceNames;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class SubareasTabComponent {
+public class SubareasTabComponent extends ObservableComponent {
     public SubareasTabComponent(List<IDepictable> campingSpaces) {
         this.subAreas = campingSpaces;
     }
@@ -17,9 +18,8 @@ public class SubareasTabComponent {
     public CampingSpaceDetailComponent campingSpaceDetailComponent;
     public CampingSpaceSelector campingSpaceSelector;
 
-    public void buildComponent() throws Exception {
-        JFrame frame = new JFrame();
-        JPanel mainPanel = new JPanel(new GridLayout(1,3));
+    public SubareasTabComponent buildComponent() throws Exception {
+        this.setLayout(new GridLayout(1,3));
         JPanel leftSidePanel = new JPanel();
         JPanel rightSidePanel = new JPanel();
         leftSidePanel.setLayout(new BorderLayout());
@@ -27,13 +27,10 @@ public class SubareasTabComponent {
         fillLeftPanel(leftSidePanel);
         fillRightPanel(rightSidePanel);
 
-        mainPanel.add(leftSidePanel);
-        mainPanel.add(rightSidePanel);
+        this.add(leftSidePanel);
+        this.add(rightSidePanel);
 
-        frame.add(mainPanel);
-        frame.setSize(1080, 720);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        return this;
     }
 
     private void fillRightPanel(JPanel rightSidePanel) throws Exception {
