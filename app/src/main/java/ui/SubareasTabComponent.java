@@ -15,7 +15,7 @@ public class SubareasTabComponent {
     private List<IDepictable> subAreas;
     public ExtendedListComponent campingSpacesListComponent;
     public CampingSpaceDetailComponent campingSpaceDetailComponent;
-    public StellplatzSelector campingSpaceSelector;
+    public CampingSpaceSelector campingSpaceSelector;
 
     public void buildComponent() throws Exception {
         JFrame frame = new JFrame();
@@ -56,7 +56,7 @@ public class SubareasTabComponent {
         dateFromComboBox.addItem("Test2");
         topLeftPanel.add(dateFromComboBox);
         leftSidePanel.add(topLeftPanel, BorderLayout.NORTH);
-        campingSpaceSelector = new StellplatzSelector(subAreas);
+        campingSpaceSelector = new CampingSpaceSelector(subAreas);
         leftSidePanel.add(campingSpaceSelector, BorderLayout.CENTER);
     }
 }

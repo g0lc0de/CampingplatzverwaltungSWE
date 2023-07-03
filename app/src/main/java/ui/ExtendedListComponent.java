@@ -73,6 +73,8 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
 
     public void selectItem(int position) {
         selected = position;
+        subareaPanels.forEach(jPanel -> jPanel.setBorder(null));
+        subareaPanels.get(position).setBorder(new LineBorder(Color.BLUE));
     }
 
     public ExtendedListComponent addSourceName(String sourceName){
@@ -84,6 +86,8 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
         this.iDepictables = iDepictables;
         return this;
     }
+
+    private List<JPanel> subareaPanels = new ArrayList<>();
 
     public ExtendedListComponent build() throws Exception {
         this.setLayout(new GridBagLayout());
@@ -102,23 +106,22 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
 
         int i = 0;
         for (IDepictable stellbereich : iDepictables) {
-            JPanel stellbereichPanel = new JPanel(new BorderLayout());
+            JPanel subareaPanel = new JPanel(new BorderLayout());
             JLabel nameLabel = new JLabel("Stellbereich " + stellbereich.getAttributeArray()[Stellplatz.ID].getValue());
-            stellbereichPanel.add(nameLabel, BorderLayout.NORTH);
-            stellbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
+            subareaPanel.add(nameLabel, BorderLayout.NORTH);
+            subareaPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
             int finalI = i;
-            stellbereichPanel.addMouseListener(new MouseAdapter() {
+            subareaPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("clicked" + finalI);
                     fireGUIEvent(new GUIEvent(sourceName, ExtendedListComponent.Commands.ITEM_SELECTED, finalI));
+                    subareaPanels.forEach(jPanel -> jPanel.setBorder(null));
+                    subareaPanel.setBorder(new LineBorder(Color.BLUE, 2));
                 }
             });
-            if(i == selected){
-                System.out.println(i);
-                stellbereichPanel.setBackground(Color.BLUE);
-            }
-            this.add(stellbereichPanel, gbc);
+            subareaPanels.add(subareaPanel);
+            this.add(subareaPanel, gbc);
             i++;
         }
         return this;

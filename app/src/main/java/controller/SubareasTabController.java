@@ -8,7 +8,7 @@ import de.dhbwka.swe.utils.util.BaseController;
 import model.Stellplatz;
 import ui.CampingSpaceDetailComponent;
 import ui.ExtendedListComponent;
-import ui.StellplatzSelector;
+import ui.CampingSpaceSelector;
 import ui.SubareasTabComponent;
 
 import java.util.Arrays;
@@ -17,8 +17,11 @@ import java.util.List;
 public class SubareasTabController  extends BaseController implements IGUIEventListener {
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
-        if(guiEvent.getCmd() == StellplatzSelector.Commands.PLACE_SELECTED){
+        if(guiEvent.getCmd() == CampingSpaceSelector.Commands.PLACE_SELECTED){
+            System.out.println("Received guiEvent: "+guiEvent.toString());
             fireUpdateEvent(new UpdateEvent(this, ExtendedListComponent.Commands.ITEM_SELECTED_BY_CONTROLLER, guiEvent.getData()));
+        } else if(guiEvent.getCmd() == ExtendedListComponent.Commands.ITEM_SELECTED){
+            fireUpdateEvent(new UpdateEvent(this, CampingSpaceSelector.Commands.PLACE_SELECTED_BY_CONTROLLER, guiEvent.getData()));
         }
     }
 
@@ -35,7 +38,7 @@ public class SubareasTabController  extends BaseController implements IGUIEventL
     );
 
     ExtendedListComponent campingSpacesList;
-    StellplatzSelector campingSpacesSelector;
+    CampingSpaceSelector campingSpacesSelector;
     CampingSpaceDetailComponent detailComponent;
 
     public SubareasTabController() throws Exception {

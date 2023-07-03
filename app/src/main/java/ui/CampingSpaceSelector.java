@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
@@ -21,7 +22,7 @@ import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
 import model.Stellplatz;
 
-public class StellplatzSelector extends ObservableComponent implements IUpdateEventListener{
+public class CampingSpaceSelector extends ObservableComponent implements IUpdateEventListener{
 	
 	/**
 	 * Command for a button being pressed
@@ -32,7 +33,8 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		 * The command text, when a button was pressed
 		 */
 		PLACE_SELECTED( "CampingplatzSelector.placeSelected", IDepictable.class ),
-		UPDATE_PLACES( "CampingplatzSelector.updatePlaces", null );
+		UPDATE_PLACES( "CampingplatzSelector.updatePlaces", null ),
+		PLACE_SELECTED_BY_CONTROLLER("CampingSpacesSelector.placeSelectedByController", Integer.class);
 
 		public final Class<?> payloadType;
 		public final String cmdText;
@@ -65,7 +67,7 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 	private JPanel pnl; // = new JPanel( new GridLayout(xy,xy) );
 	
 	
-	public StellplatzSelector( List<IDepictable> stellplaetze) {
+	public CampingSpaceSelector(List<IDepictable> stellplaetze) {
 		this.stellplaetze = stellplaetze;
 
 		if( stellplaetze.size() != 9 && stellplaetze.size() != 16 ) {
@@ -86,6 +88,7 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 			button.addMouseListener( new MouseAdapter() {
 			    public void mouseClicked(MouseEvent ev) {
 			    	fireGUIEvent( new GUIEvent(new Object(), Commands.PLACE_SELECTED, getStellplatzPosition( e.getElementID() )));
+					updateSelected(button);
 			    }
 			});
 			button.setBorder(BorderFactory.createEtchedBorder());
@@ -137,7 +140,21 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		if( ue.getCmd() == Commands.UPDATE_PLACES ) {
 			System.out.println("From Parent:"+ ue.getCmd());
 			setReservedColors();
+		} else if(ue.getCmd() == Commands.PLACE_SELECTED_BY_CONTROLLER){
+			System.out.println("Received update from controller: " + this);
+			updateSelected((Integer) ue.getData());
 		}
+	}
+
+	private void updateSelected(int position){
+		IDepictable iDepictable = stellplaetze.get(position);
+		JButton button = stellPlatzButtonMap.get(iDepictable.getElementID());
+		updateSelected(button);
+	}
+
+	private void updateSelected(JButton button){
+		stellPlatzButtonMap.values().forEach(jButton -> jButton.setBorder(BorderFactory.createEtchedBorder()));
+		button.setBorder(new LineBorder(Color.BLUE, 2));
 	}
 
 }
