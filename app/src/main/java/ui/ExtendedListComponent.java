@@ -89,6 +89,12 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
 
     private List<JPanel> subareaPanels = new ArrayList<>();
 
+    public ExtendedListComponent removePanels(){
+        subareaPanels = new ArrayList<>();
+        removeAll();
+        return this;
+    }
+
     public ExtendedListComponent build() throws Exception {
         this.setLayout(new GridBagLayout());
         System.out.println("List received:" + iDepictables.toString());

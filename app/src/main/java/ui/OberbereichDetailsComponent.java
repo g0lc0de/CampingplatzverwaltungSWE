@@ -25,6 +25,11 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
         System.out.println(oberbereich);
         this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[Oberbereich.STELLPLATZLIST].getValue();
         System.out.println(stellplatzList);
+        try {
+            stellbereicheListComponent.removePanels().build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         oberbereichNameLabel.setText((String) oberbereich.getAttributeArray()[Oberbereich.NAME].getValue());
         oberbereichBeschreibungLabel.setText((String) oberbereich.getAttributeArray()[Oberbereich.LAGEBESCHREIBUNG].getValue());
     }
