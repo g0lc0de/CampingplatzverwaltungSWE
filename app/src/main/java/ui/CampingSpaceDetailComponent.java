@@ -20,7 +20,10 @@ public class CampingSpaceDetailComponent extends ObservableComponent implements 
 
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
-
+        if(updateEvent.getCmd() == Commands.CAMPING_SPACE_SELECTED){
+            subarea = (IDepictable) updateEvent.getData();
+            fillLabels();
+        }
     }
 
     public enum Commands implements EventCommand {
@@ -46,17 +49,17 @@ public class CampingSpaceDetailComponent extends ObservableComponent implements 
         }
     }
 
+    private void fillLabels(){
+        subareaNameLabel.setText((String) subarea.getAttributeArray()[CampingSpace.ID].getValue());
+        subareaDescLabel.setText((Boolean) subarea.getAttributeArray()[CampingSpace.RESERVIERT].getValue() ? "Reserviert" : "Nicht reserviert");
+    }
     public CampingSpaceDetailComponent(IDepictable iDepictable) {
         this.subarea = iDepictable;
-        subareaNameLabel = new JLabel((String) subarea.getAttributeArray()[CampingSpace.ID].getValue());
-        subareaDescLabel = new JLabel("");
-    }
-
-    public JPanel createDetailComponent() throws Exception {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-
-        mainPanel.setBorder(new LineBorder(Color.green, 2));
+        this.setLayout(new BorderLayout());
+        subareaNameLabel = new JLabel();
+        subareaDescLabel = new JLabel();
+        fillLabels();
+        this.setBorder(new LineBorder(Color.green, 2));
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.weightx = 1;
@@ -65,7 +68,7 @@ public class CampingSpaceDetailComponent extends ObservableComponent implements 
 
         JPanel topPanel = new JPanel(new GridBagLayout());
 
-        mainPanel.add(topPanel, BorderLayout.NORTH);
+        this.add(topPanel, BorderLayout.NORTH);
 
         topPanel.add(UserInterfaceUtils.getHeaderLabel("Details"), gridBagConstraints);
 
@@ -76,8 +79,6 @@ public class CampingSpaceDetailComponent extends ObservableComponent implements 
         topPanel.add(subareaDescLabel, gridBagConstraints);
         gridBagConstraints.gridy += 1;
         topPanel.add(new JLabel("40% Auslastung"), gridBagConstraints);
-
-        return mainPanel;
     }
 
 

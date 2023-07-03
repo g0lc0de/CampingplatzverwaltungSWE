@@ -8,7 +8,7 @@ public class CampingSpace implements IDepictable {
 	public final static int ID = 0;
 	public final static int RESERVIERT = 1;
 	private int size;
-	private Platzeignung platzeignung;
+	private SpaceSuitability spaceSuitability;
 	
 	private Attribute[] attributes = new Attribute[] {
 			new Attribute("iD", this, String.class, "", "unknown", true),

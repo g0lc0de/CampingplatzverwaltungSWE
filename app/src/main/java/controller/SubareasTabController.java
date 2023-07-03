@@ -18,9 +18,11 @@ public class SubareasTabController  extends BaseController implements IGUIEventL
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
         if(guiEvent.getCmd() == CampingSpaceSelector.Commands.PLACE_SELECTED){
-            System.out.println("Received guiEvent: "+guiEvent.toString());
+            System.out.println("Received guiEvent: "+ guiEvent);
+            fireUpdateEvent(new UpdateEvent(this, CampingSpaceDetailComponent.Commands.CAMPING_SPACE_SELECTED, stellplatzList.get((Integer) guiEvent.getData())));
             fireUpdateEvent(new UpdateEvent(this, ExtendedListComponent.Commands.ITEM_SELECTED_BY_CONTROLLER, guiEvent.getData()));
         } else if(guiEvent.getCmd() == ExtendedListComponent.Commands.ITEM_SELECTED){
+            fireUpdateEvent(new UpdateEvent(this, CampingSpaceDetailComponent.Commands.CAMPING_SPACE_SELECTED, stellplatzList.get((Integer) guiEvent.getData())));
             fireUpdateEvent(new UpdateEvent(this, CampingSpaceSelector.Commands.PLACE_SELECTED_BY_CONTROLLER, guiEvent.getData()));
         }
     }
@@ -55,6 +57,8 @@ public class SubareasTabController  extends BaseController implements IGUIEventL
         this.addObserver(campingSpacesList);
 
         detailComponent = component.campingSpaceDetailComponent;
+        this.addObserver(detailComponent);
+        detailComponent.addObserver(this);
 
         campingSpacesSelector = component.campingSpaceSelector;
         campingSpacesSelector.addObserver(this);
