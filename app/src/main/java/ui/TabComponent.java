@@ -1,5 +1,7 @@
 package ui;
 
+import controller.TabController;
+import controller.UebersichtTabController;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import model.Oberbereich;
@@ -10,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TabComponent extends ObservableComponent {
-    private UebersichtTabComponent component;
+    private TabController controller;
     private List<Stellplatz> stellplatzList = Arrays.asList(
             new Stellplatz("1", false),
             new Stellplatz("2", true),
@@ -50,16 +52,39 @@ public class TabComponent extends ObservableComponent {
             new Oberbereich("4", "Lorem ipsum aaa", "O4", stellplatzList2)
     );
 
-    public TabComponent() throws Exception {
+    private UebersichtTabComponent overviewTabComponent;
+    private SubareasTabComponent subareasTabComponent;
+
+    public UebersichtTabComponent getOverviewTabComponent() {
+        return overviewTabComponent;
+    }
+
+    public void setOverviewTabComponent(UebersichtTabComponent overviewTabComponent) {
+        this.overviewTabComponent = overviewTabComponent;
+    }
+
+    public SubareasTabComponent getSubareasTabComponent() {
+        return subareasTabComponent;
+    }
+
+    public void setSubareasTabComponent(SubareasTabComponent subareasTabComponent) {
+        this.subareasTabComponent = subareasTabComponent;
+    }
+
+    public void init(){
         JFrame frame = new JFrame();
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Übersicht", new UebersichtTabComponent(oberbereichList));
-        tabbedPane.add("Stellbereiche", new SubareasTabComponent(iDepictableList).buildComponent());
+        tabbedPane.add("Übersicht", overviewTabComponent);
+        tabbedPane.add("Stellbereiche", subareasTabComponent);
         frame.add(tabbedPane);
 
         frame.setSize(1080, 720);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    }
+
+    public TabComponent() throws Exception {
+
     }
 }

@@ -37,21 +37,26 @@ public class SubareasTabController  extends BaseController implements IGUIEventL
             new Stellplatz("9a", false)
     );
 
-    ExtendedListComponent campingSpacesList;
-    CampingSpaceSelector campingSpacesSelector;
-    CampingSpaceDetailComponent detailComponent;
+    private ExtendedListComponent campingSpacesList;
+    private CampingSpaceSelector campingSpacesSelector;
+    private CampingSpaceDetailComponent detailComponent;
+    private SubareasTabComponent component;
+
+    public SubareasTabComponent getComponent() {
+        return component;
+    }
 
     public SubareasTabController() throws Exception {
-        SubareasTabComponent tabComponent = new SubareasTabComponent(stellplatzList);
-        tabComponent.buildComponent();
 
-        campingSpacesList = tabComponent.campingSpacesListComponent;
+        component = new SubareasTabComponent(stellplatzList);
+
+        campingSpacesList = component.campingSpacesListComponent;
         campingSpacesList.addObserver(this);
         this.addObserver(campingSpacesList);
 
-        detailComponent = tabComponent.campingSpaceDetailComponent;
+        detailComponent = component.campingSpaceDetailComponent;
 
-        campingSpacesSelector = tabComponent.campingSpaceSelector;
+        campingSpacesSelector = component.campingSpaceSelector;
         campingSpacesSelector.addObserver(this);
         this.addObserver(campingSpacesSelector);
 

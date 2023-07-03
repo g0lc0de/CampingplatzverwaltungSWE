@@ -9,16 +9,8 @@ import java.awt.*;
 import java.util.List;
 
 public class SubareasTabComponent extends ObservableComponent {
-    public SubareasTabComponent(List<IDepictable> campingSpaces) {
+    public SubareasTabComponent(List<IDepictable> campingSpaces) throws Exception {
         this.subAreas = campingSpaces;
-    }
-
-    private List<IDepictable> subAreas;
-    public ExtendedListComponent campingSpacesListComponent;
-    public CampingSpaceDetailComponent campingSpaceDetailComponent;
-    public CampingSpaceSelector campingSpaceSelector;
-
-    public SubareasTabComponent buildComponent() throws Exception {
         this.setLayout(new GridLayout(1,3));
         JPanel leftSidePanel = new JPanel();
         JPanel rightSidePanel = new JPanel();
@@ -29,9 +21,12 @@ public class SubareasTabComponent extends ObservableComponent {
 
         this.add(leftSidePanel);
         this.add(rightSidePanel);
-
-        return this;
     }
+
+    private List<IDepictable> subAreas;
+    public ExtendedListComponent campingSpacesListComponent;
+    public CampingSpaceDetailComponent campingSpaceDetailComponent;
+    public CampingSpaceSelector campingSpaceSelector;
 
     private void fillRightPanel(JPanel rightSidePanel) throws Exception {
         JPanel topRightPanel = new JPanel();

@@ -47,6 +47,11 @@ public class UebersichtTabController extends BaseController implements IGUIEvent
     private ExtendedListComponent oberbereichListComponent;
     private ExtendedListComponent stellbereicheListComponent;
     private OberbereichDetailsComponent oberbereichDetailsComponent;
+
+    public UebersichtTabComponent getComponent() {
+        return component;
+    }
+
     public UebersichtTabController() throws Exception {
 
         component = new UebersichtTabComponent(oberbereichList);
