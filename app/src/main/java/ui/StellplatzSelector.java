@@ -85,7 +85,7 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 			stellPlatzButtonMap.put(e.getElementID(), button);
 			button.addMouseListener( new MouseAdapter() {
 			    public void mouseClicked(MouseEvent ev) {
-			    	fireGUIEvent( new GUIEvent( getStellplatz( e.getElementID() ), Commands.PLACE_SELECTED));
+			    	fireGUIEvent( new GUIEvent(new Object(), Commands.PLACE_SELECTED, getStellplatzPosition( e.getElementID() )));
 			    }
 			});
 			button.setBorder(BorderFactory.createEtchedBorder());
@@ -95,11 +95,14 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		this.setReservedColors();
 	}
 
-	private IDepictable getStellplatz( String elementId ) {
-		for (IDepictable iDepictable : stellplaetze) {
-			if( iDepictable.getElementID().equals(elementId) ) return iDepictable;
+	private int getStellplatzPosition(String elementId ) {
+
+		for (int i = 0; i < stellplaetze.size(); i++) {
+			IDepictable iDepictable = stellplaetze.get(i);
+			if( iDepictable.getElementID().equals(elementId) ) return i;
 		}
-		return null;
+
+		return -1;
 	}
 
 	private void setReservedColors() {

@@ -4,15 +4,12 @@ import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import model.Oberbereich;
-import model.Stellplatz;
 import util.StaticSourceNames;
 import util.UserInterfaceUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class OberbereichDetailsComponent extends ObservableComponent implements IUpdateEventListener {
@@ -21,7 +18,6 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
     JLabel oberbereichNameLabel;
     JLabel oberbereichBeschreibungLabel;
     List<IDepictable> stellplatzList;
-    private JScrollPane listComponent;
 
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
@@ -31,7 +27,6 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
         System.out.println(stellplatzList);
         oberbereichNameLabel.setText((String) oberbereich.getAttributeArray()[Oberbereich.NAME].getValue());
         oberbereichBeschreibungLabel.setText((String) oberbereich.getAttributeArray()[Oberbereich.LAGEBESCHREIBUNG].getValue());
-        listComponent = stellbereicheListComponent.createListComponent( generatePanelsFromArrayList(stellplatzList));
     }
 
     public enum Commands implements EventCommand {
@@ -64,13 +59,13 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
         this.oberbereichBeschreibungLabel = new JLabel((String) oberbereich.getAttributeArray()[Oberbereich.LAGEBESCHREIBUNG].getValue());
     }
 
-    private ExtendedListComponent stellbereicheListComponent = new ExtendedListComponent(StaticSourceNames.OBERBEREICH_DETAILS_COMPONENT);
+    private ExtendedListComponent stellbereicheListComponent = new ExtendedListComponent();
 
     public ExtendedListComponent getStellbereicheListComponent() {
         return stellbereicheListComponent;
     }
 
-    public JPanel createDetailComponent() {
+    public JPanel createDetailComponent() throws Exception {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
@@ -95,21 +90,13 @@ public class OberbereichDetailsComponent extends ObservableComponent implements 
         gridBagConstraints.gridy += 1;
         topPanel.add(new JLabel("40% Auslastung"), gridBagConstraints);
 
-        listComponent = stellbereicheListComponent.createListComponent( generatePanelsFromArrayList(stellplatzList));
-        mainPanel.add(listComponent, BorderLayout.CENTER);
+        stellbereicheListComponent.addSourceName(StaticSourceNames.OBERBEREICH_DETAILS_COMPONENT);
+        stellbereicheListComponent.addIDepictables(stellplatzList);
+
+        mainPanel.add(stellbereicheListComponent.build(), BorderLayout.CENTER);
 
         return mainPanel;
     }
 
-    private List<JPanel> generatePanelsFromArrayList(List<IDepictable> stellplatzList) {
-        List<JPanel> stellbereichPanels = new ArrayList<>();
-        for (IDepictable stellbereich : stellplatzList) {
-            System.out.println(stellbereich.getAttributeArray()[Stellplatz.ID].getValue());
-            JPanel stellbereichPanel = new JPanel(new BorderLayout());
-            stellbereichPanel.add(new JLabel("Stellbereich " + stellbereich.getAttributeArray()[Stellplatz.ID].getValue()), BorderLayout.NORTH);
-            stellbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
-            stellbereichPanels.add(stellbereichPanel);
-        }
-        return stellbereichPanels;
-    }
+
 }

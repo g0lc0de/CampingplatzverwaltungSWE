@@ -20,13 +20,13 @@ public class UebersichtTabController extends BaseController implements IGUIEvent
     private List<Stellplatz> stellplatzList = Arrays.asList(
             new Stellplatz("1", false),
             new Stellplatz("2", true),
-            new Stellplatz("3", false),
+            new Stellplatz("3a", false),
             new Stellplatz("4", false),
             new Stellplatz("5", true),
-            new Stellplatz("6", false),
+            new Stellplatz("6a", false),
             new Stellplatz("7", false),
             new Stellplatz("8", true),
-            new Stellplatz("9", false)
+            new Stellplatz("9a", false)
     );
 
     private List<Stellplatz> stellplatzList2 = Arrays.asList(
@@ -34,11 +34,7 @@ public class UebersichtTabController extends BaseController implements IGUIEvent
             new Stellplatz("21", true),
             new Stellplatz("31", false),
             new Stellplatz("41", false),
-            new Stellplatz("51", true),
-            new Stellplatz("61", false),
-            new Stellplatz("71", false),
-            new Stellplatz("81", true),
-            new Stellplatz("91", false)
+            new Stellplatz("51", true)
     );
 
     private List<IDepictable> oberbereichList = Arrays.asList(
@@ -83,6 +79,5 @@ public class UebersichtTabController extends BaseController implements IGUIEvent
                 fireUpdateEvent(new UpdateEvent(this, OberbereichDetailsComponent.Commands.OBERBEREICH_SELECTED, selected));
             }
         }
-//        fireUpdateEvent(new UpdateEvent(this,UebersichtTabComponent.Commands.TEXT_CHANGED, guiEvent.getData()));
     }
 }

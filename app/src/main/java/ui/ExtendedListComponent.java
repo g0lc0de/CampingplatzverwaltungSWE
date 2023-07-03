@@ -7,7 +7,6 @@ import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import model.Stellplatz;
-import util.UserInterfaceUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -15,18 +14,26 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExtendedListComponent extends ObservableComponent implements IUpdateEventListener {
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
-        System.out.println("received updates");
+        if(updateEvent.getCmd() == Commands.ITEM_SELECTED_BY_CONTROLLER){
+            System.out.println("selected item by controller");
+            try {
+                selectItem((Integer) updateEvent.getData());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public enum Commands implements EventCommand {
 
-        ITEM_SELECTED("ExtendedListComponent.itemSelected", String.class);
+        ITEM_SELECTED("ExtendedListComponent.itemSelected", String.class),
+        ITEM_SELECTED_BY_CONTROLLER("ExtendedListComponent.itemSelectedByController", String.class);
 
         String cmdText;
         Class<?> payloadType;
@@ -48,45 +55,72 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
     }
 
     private String sourceName;
+    private int selected = -1;
+    private List<IDepictable> iDepictables;
 
     public String getSourceName() {
         return sourceName;
     }
 
-    public ExtendedListComponent(String sourceName) {
+    public ExtendedListComponent(String sourceName, List<IDepictable> iDepictables) {
         this.sourceName = sourceName;
+        this.iDepictables = iDepictables;
     }
 
-    public JScrollPane createListComponent(List<JPanel> panels) {
-        JPanel mainList = new JPanel(new GridBagLayout());
+    public ExtendedListComponent(){
 
-        mainList.setBorder(new LineBorder(Color.black, 2));
+    }
+
+    public void selectItem(int position) {
+        selected = position;
+    }
+
+    public ExtendedListComponent addSourceName(String sourceName){
+        this.sourceName = sourceName;
+        return this;
+    }
+
+    public ExtendedListComponent addIDepictables(List<IDepictable> iDepictables){
+        this.iDepictables = iDepictables;
+        return this;
+    }
+
+    public ExtendedListComponent build() throws Exception {
+        this.setLayout(new GridBagLayout());
+        System.out.println("List received:" + iDepictables.toString());
+
+        if(iDepictables == null || sourceName == null){
+            throw new Exception();
+        }
+
+        this.setBorder(new LineBorder(Color.black, 2));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        for (int i = 0; i < panels.size(); i++) {
-            JPanel panel = panels.get(i);
-            panel.setBorder(new MatteBorder(0, 0, 1, 0, Color.GRAY));
+        int i = 0;
+        for (IDepictable stellbereich : iDepictables) {
+            JPanel stellbereichPanel = new JPanel(new BorderLayout());
+            JLabel nameLabel = new JLabel("Stellbereich " + stellbereich.getAttributeArray()[Stellplatz.ID].getValue());
+            stellbereichPanel.add(nameLabel, BorderLayout.NORTH);
+            stellbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
             int finalI = i;
-            panel.addMouseListener(new MouseAdapter() {
+            stellbereichPanel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     System.out.println("clicked" + finalI);
                     fireGUIEvent(new GUIEvent(sourceName, ExtendedListComponent.Commands.ITEM_SELECTED, finalI));
                 }
             });
-            mainList.add(panel, gbc);
+            if(i == selected){
+                System.out.println(i);
+                stellbereichPanel.setBackground(Color.BLUE);
+            }
+            this.add(stellbereichPanel, gbc);
+            i++;
         }
-
-        JPanel wrapperPanel = new JPanel();
-        wrapperPanel.setLayout(new BoxLayout(wrapperPanel, BoxLayout.Y_AXIS));
-        wrapperPanel.add(mainList);
-
-        return new JScrollPane(wrapperPanel);
+        return this;
     }
-
-
 }

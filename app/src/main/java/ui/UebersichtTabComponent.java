@@ -37,7 +37,7 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         }
     }
     private OberbereichDetailsComponent oberbereichDetailsComponent;
-    private ExtendedListComponent oberbereichListComponent = new ExtendedListComponent(StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST);
+    private ExtendedListComponent oberbereichListComponent = new ExtendedListComponent();
 
     public ExtendedListComponent getOberbereichListComponent() {
         return oberbereichListComponent;
@@ -54,6 +54,9 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
         this.oberbereiche = oberbereiche;
         this.oberbereichDetailsComponent = new OberbereichDetailsComponent(oberbereiche.get(0));
 
+        oberbereichListComponent.addSourceName(StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST);
+        oberbereichListComponent.addIDepictables(oberbereiche);
+
         JFrame frame = new JFrame();
         GridLayout gridLayout = new GridLayout(1, 3);
         frame.setLayout(gridLayout);
@@ -68,17 +71,9 @@ public class UebersichtTabComponent extends ObservableComponent implements IUpda
 
         frame.add(mapPanel);
 
-        List<JPanel> oberbereichePanels = new ArrayList<>();
-        for (int i = 0; i < oberbereiche.size(); i++) {
-            JPanel oberbereichPanel = new JPanel(new BorderLayout());
-            oberbereichPanel.add(new JLabel("Oberbereich " + oberbereiche.get(i).getAttributeArray()[Oberbereich.NAME].getValue()), BorderLayout.NORTH);
-            oberbereichPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
-            oberbereichePanels.add(oberbereichPanel);
-        }
-
         JPanel middlePanelHolder = new JPanel(new GridLayout(2,1));
         JPanel listHolder = new JPanel(new BorderLayout());
-        listHolder.add(oberbereichListComponent.createListComponent(oberbereichePanels), BorderLayout.CENTER);
+        listHolder.add(oberbereichListComponent.build(), BorderLayout.CENTER);
         listHolder.setBorder(new LineBorder(Color.pink));
         middlePanelHolder.add(HeaderComponent.createHeaderComponent(listHolder, "Oberbereiche"));
         JPanel buttonPanel = new JPanel(new GridLayout(4,1));
