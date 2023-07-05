@@ -53,6 +53,15 @@ public class TabComponent extends ObservableComponent {
 
     private OverviewTabComponent overviewTabComponent;
     private SubareasTabComponent subareasTabComponent;
+    private BookingTabComponent bookingTabComponent;
+
+    public BookingTabComponent getBookingTabComponent() {
+        return bookingTabComponent;
+    }
+
+    public void setBookingTabComponent(BookingTabComponent bookingTabComponent) {
+        this.bookingTabComponent = bookingTabComponent;
+    }
 
     public OverviewTabComponent getOverviewTabComponent() {
         return overviewTabComponent;
@@ -82,6 +91,7 @@ public class TabComponent extends ObservableComponent {
         tabbedPane = new JTabbedPane();
         tabbedPane.add("Übersicht", overviewTabComponent);
         tabbedPane.add("Stellbereiche", subareasTabComponent);
+        tabbedPane.add("Buchungen", bookingTabComponent);
         frame.add(tabbedPane);
 
         frame.setSize(1080, 720);

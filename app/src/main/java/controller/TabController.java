@@ -26,9 +26,11 @@ public class TabController extends BaseController implements IGUIEventListener {
     public void init() throws Exception {
         OverviewTabController overviewTabController = new OverviewTabController();
         SubareasTabController subareasTabController = new SubareasTabController();
+        BookingTabController bookingTabController = new BookingTabController();
         tabComponent = new TabComponent();
         tabComponent.setOverviewTabComponent(overviewTabController.getComponent());
         tabComponent.setSubareasTabComponent(subareasTabController.getComponent());
+        tabComponent.setBookingTabComponent(bookingTabController.getComponent());
         tabComponent.init();
     }
 
