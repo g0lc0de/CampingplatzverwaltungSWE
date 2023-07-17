@@ -3,6 +3,8 @@ package utils;
 
 import de.dhbwka.swe.utils.model.Attribute;
 
+import java.util.List;
+
 public class AttributeUtilities {
 
     /**
@@ -15,10 +17,12 @@ public class AttributeUtilities {
      */
     public static String convertAttributeArrayToSmallString(Attribute[] attributeArray) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("\t|%-12s |%-10s:|\n","Name", "Wert"));
+        stringBuilder.append(String.format("\t|%-12s |%-10s |\n","Name", "Wert"));
 
         for (Attribute attr : attributeArray) {
-            stringBuilder.append(String.format("\t|%-12s |%-10s:|\n",attr.getName(), attr.getValue()));
+            if (!(attr.getValue() instanceof List)) {
+                stringBuilder.append(String.format("\t|%-12s |%-10s |\n",attr.getName(), attr.getValue()));
+            }
         }
 
         return stringBuilder.toString();
