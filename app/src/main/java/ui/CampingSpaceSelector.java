@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.GUIEvent;
@@ -19,9 +20,9 @@ import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.bestand.Stellplatz;
+import model.CampingSpace;
 
-public class StellplatzSelector extends ObservableComponent implements IUpdateEventListener{
+public class CampingSpaceSelector extends ObservableComponent implements IUpdateEventListener{
 	
 	/**
 	 * Command for a button being pressed
@@ -32,7 +33,8 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		 * The command text, when a button was pressed
 		 */
 		PLACE_SELECTED( "CampingplatzSelector.placeSelected", IDepictable.class ),
-		UPDATE_PLACES( "CampingplatzSelector.updatePlaces", null );
+		UPDATE_PLACES( "CampingplatzSelector.updatePlaces", null ),
+		PLACE_SELECTED_BY_CONTROLLER("CampingSpacesSelector.placeSelectedByController", Integer.class);
 
 		public final Class<?> payloadType;
 		public final String cmdText;
@@ -65,10 +67,10 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 	private JPanel pnl; // = new JPanel( new GridLayout(xy,xy) );
 	
 	
-	public StellplatzSelector( List<IDepictable> stellplaetze) {
+	public CampingSpaceSelector(List<IDepictable> stellplaetze) {
 		this.stellplaetze = stellplaetze;
 
-		if( stellplaetze.size() != 4 && stellplaetze.size() != 9 && stellplaetze.size() != 16 ) {
+		if( stellplaetze.size() != 9 && stellplaetze.size() != 16 ) {
 			throw new IllegalArgumentException("The number of 'Stellplaetze' must be 9 or 16");
 		}
 		this.dimXY = (int)(Math.sqrt(stellplaetze.size()));
@@ -85,7 +87,8 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 			stellPlatzButtonMap.put(e.getElementID(), button);
 			button.addMouseListener( new MouseAdapter() {
 			    public void mouseClicked(MouseEvent ev) {
-			    	fireGUIEvent( new GUIEvent( getStellplatz( e.getElementID() ), Commands.PLACE_SELECTED));
+			    	fireGUIEvent( new GUIEvent(new Object(), Commands.PLACE_SELECTED, getStellplatzPosition( e.getElementID() )));
+					updateSelected(button);
 			    }
 			});
 			button.setBorder(BorderFactory.createEtchedBorder());
@@ -95,11 +98,14 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		this.setReservedColors();
 	}
 
-	private IDepictable getStellplatz( String elementId ) {
-		for (IDepictable iDepictable : stellplaetze) {
-			if( iDepictable.getElementID().equals(elementId) ) return iDepictable;
+	private int getStellplatzPosition(String elementId ) {
+
+		for (int i = 0; i < stellplaetze.size(); i++) {
+			IDepictable iDepictable = stellplaetze.get(i);
+			if( iDepictable.getElementID().equals(elementId) ) return i;
 		}
-		return null;
+
+		return -1;
 	}
 
 	private void setReservedColors() {
@@ -109,7 +115,7 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 			if( attArray != null ) {
 				// get the button
 				JButton button = stellPlatzButtonMap.get(attArray[0].getValue() );
-				if( ((Boolean)attArray[Stellplatz.RESERVIERT].getValue()) == true ) {
+				if( ((Boolean)attArray[CampingSpace.RESERVIERT].getValue()) == true ) {
 					button.setBackground(Color.red);
 				}
 				else {
@@ -134,7 +140,21 @@ public class StellplatzSelector extends ObservableComponent implements IUpdateEv
 		if( ue.getCmd() == Commands.UPDATE_PLACES ) {
 			System.out.println("From Parent:"+ ue.getCmd());
 			setReservedColors();
+		} else if(ue.getCmd() == Commands.PLACE_SELECTED_BY_CONTROLLER){
+			System.out.println("Received update from controller: " + this);
+			updateSelected((Integer) ue.getData());
 		}
+	}
+
+	private void updateSelected(int position){
+		IDepictable iDepictable = stellplaetze.get(position);
+		JButton button = stellPlatzButtonMap.get(iDepictable.getElementID());
+		updateSelected(button);
+	}
+
+	private void updateSelected(JButton button){
+		stellPlatzButtonMap.values().forEach(jButton -> jButton.setBorder(BorderFactory.createEtchedBorder()));
+		button.setBorder(new LineBorder(Color.BLUE, 2));
 	}
 
 }

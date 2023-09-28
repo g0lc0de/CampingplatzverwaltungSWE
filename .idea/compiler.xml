@@ -6,10 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="SWE" />
+        <module name="CampingplatzverwaltungSWE" />
+        <module name="Camping" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="app" target="11" />
+      <module name="database" target="11" />
+      <module name="event" target="11" />
+      <module name="model" target="11" />
+      <module name="test" target="11" />
+      <module name="ui" target="11" />
+      <module name="util" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
