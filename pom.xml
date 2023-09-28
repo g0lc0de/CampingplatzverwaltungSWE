@@ -19,6 +19,14 @@
             <artifactId>swe-utils</artifactId>
             <version>4.7.5</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.jdatepicker/jdatepicker -->
+        <dependency>
+            <groupId>org.jdatepicker</groupId>
+            <artifactId>jdatepicker</artifactId>
+            <version>1.3.4</version>
+        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -26,6 +34,11 @@
             <id>webis-public</id>
             <url>https://iai-artifactory.iai.kit.edu/artifactory/webis-public/</url>
         </repository>
+
+        <repository>
+            <id>mvn-repository</id>
+            <url>https://mvnrepository.com/artifact/</url>
+        </repository>
     </repositories>
-    
+
 </project>

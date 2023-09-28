@@ -2,10 +2,9 @@ package model;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
+import model.personen.Person;
 
 import java.time.Instant;
-import java.time.Year;
-import java.time.temporal.TemporalAmount;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
