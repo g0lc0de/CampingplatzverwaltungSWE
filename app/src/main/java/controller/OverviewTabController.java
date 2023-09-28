@@ -5,8 +5,8 @@ import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
-import model.CampingArea;
-import model.CampingSpace;
+import model.properties.CampingArea;
+import model.properties.CampingSpace;
 import ui.*;
 import util.StaticSourceNames;
 

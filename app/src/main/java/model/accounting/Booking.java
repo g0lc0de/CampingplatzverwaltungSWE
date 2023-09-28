@@ -1,8 +1,8 @@
-package model;
+package model.accounting;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.personen.Person;
+import model.hr.Person;
 
 import java.time.Instant;
 import java.util.Date;

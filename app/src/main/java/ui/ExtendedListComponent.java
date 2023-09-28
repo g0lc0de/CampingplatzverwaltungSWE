@@ -6,7 +6,7 @@ import de.dhbwka.swe.utils.event.IUpdateEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.CampingSpace;
+import model.properties.CampingSpace;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

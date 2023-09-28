@@ -4,12 +4,11 @@ import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
-import model.Booking;
+import model.accounting.Booking;
 import ui.BookingDetailComponent;
 import ui.BookingTabComponent;
 import ui.ExtendedListComponent;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

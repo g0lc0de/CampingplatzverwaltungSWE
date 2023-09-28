@@ -4,7 +4,7 @@ import controller.TabController;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.CampingArea;
+import model.properties.CampingArea;
 import util.StaticSourceNames;
 import util.UserInterfaceUtils;
 

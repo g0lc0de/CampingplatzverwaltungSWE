@@ -5,7 +5,7 @@ import de.dhbwka.swe.utils.event.IUpdateEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.CampingSpace;
+import model.properties.CampingSpace;
 import util.UserInterfaceUtils;
 
 import javax.swing.*;
@@ -51,7 +51,7 @@ public class CampingSpaceDetailComponent extends ObservableComponent implements 
 
     private void fillLabels(){
         subareaNameLabel.setText((String) subarea.getAttributeArray()[CampingSpace.ID].getValue());
-        subareaDescLabel.setText((Boolean) subarea.getAttributeArray()[CampingSpace.RESERVIERT].getValue() ? "Reserviert" : "Nicht reserviert");
+        subareaDescLabel.setText((Boolean) subarea.getAttributeArray()[CampingSpace.RESERVED].getValue() ? "Reserviert" : "Nicht reserviert");
     }
     public CampingSpaceDetailComponent(IDepictable iDepictable) {
         this.subarea = iDepictable;

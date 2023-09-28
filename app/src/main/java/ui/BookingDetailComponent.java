@@ -5,13 +5,12 @@ import de.dhbwka.swe.utils.event.IUpdateEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.Booking;
+import model.accounting.Booking;
 import util.UserInterfaceUtils;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.util.Date;
 
 public class BookingDetailComponent extends ObservableComponent implements IUpdateEventListener {
 

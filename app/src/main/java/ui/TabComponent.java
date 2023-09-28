@@ -3,8 +3,8 @@ package ui;
 import controller.TabController;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import model.CampingArea;
-import model.CampingSpace;
+import model.properties.CampingArea;
+import model.properties.CampingSpace;
 
 import javax.swing.*;
 import java.util.Arrays;

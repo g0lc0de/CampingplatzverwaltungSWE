@@ -5,7 +5,7 @@ import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
-import model.CampingSpace;
+import model.properties.CampingSpace;
 import ui.CampingSpaceDetailComponent;
 import ui.ExtendedListComponent;
 import ui.CampingSpaceSelector;
