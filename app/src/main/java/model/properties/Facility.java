@@ -3,74 +3,61 @@ package model.properties;
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.model.IPersistable;
+import model.equipment.ElectronicalDevice;
 import model.hr.Employee;
 import model.maintenance.ServiceContract;
-import utils.AttributeUtilities;
+import util.AttributeUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Facility implements IDepictable, IPersistable {
 
-    public final static int ID = 0;
-    public final static int NAME = 1;
-    public final static int BUILDING_AREA = 2;
-    public final static int WATER_USAGE = 3;
-    public final static int POWER_USAGE = 4;
-    public final static int ACCESSIBLE = 5;
-    public final static int OPENING_HOURS = 6;
-    public final static int STATUS = 7;
-    public final static int DESCRIPTION = 8;
-    public final static int SERVICE_CONTRACTS = 9;
-    public final static int ASSIGNED_EMPLOYEES = 10;
+    public final static int
+            ID = 0,
+            NAME = 1,
+            BUILDING_AREA = 2,
+            WATER_USAGE = 3,
+            POWER_USAGE = 4,
+            ACCESSIBLE = 5,
+            OPENING_HOURS = 6,
+            STATUS = 7,
+            DESCRIPTION = 8,
+            SERVICE_CONTRACTS = 9,
+            ASSIGNED_EMPLOYEES = 10;
 
-//TODO    private List<TechnischesGeraet> technischeGeraete = new ArrayList<>()
+    private String id;
+    private String name;
+    private double building_size;
+    private boolean accessible;
+    private double water_usage = 0;
+    private double power_usage = 0;
+    private String opening_hours = "";
+    private Status status = Status.CLOSED;
+    private String description = "";
 
-    private Attribute[] attributes = new Attribute[] {
-            new Attribute("ID", this, String.class, "", "unknown", true),
-            new Attribute("Name", this, String.class, "", "unknown", true),
-            new Attribute("Building Area", this, Double.class, "", "unknown", true),
-            new Attribute("Water Usage", this, Double.class, 0, 0, true),
-            new Attribute("Power Usage", this, Double.class, 0, 0, true),
-            new Attribute("Accessible", this, Boolean.class, false, false, true),
-            new Attribute("Opening Hours", this, String.class, "", "unknown", true),
-            new Attribute("Status", this, Status.class, Status.CLOSED, Status.CLOSED, true),
-            new Attribute("Description", this, String.class, "", "unknown", true),
+    private List<ServiceContract> serviceContracts = new ArrayList<>();
+    private List<Employee> assignedEmployees = new ArrayList<>();
 
-            new Attribute("Service Contracts", this, List.class, new ArrayList<ServiceContract>(), new ArrayList<ServiceContract>(), true),
-            new Attribute("Assigned Employee", this, List.class, new ArrayList<Employee>(), new ArrayList<Employee>(), true)
-    };
+    private List<ElectronicalDevice> electronicalDevices = new ArrayList<>();
 
-    public Facility(String id, String Name, double building_area, boolean accessible, Status status) throws Exception {
-        attributes[ID].setValue(id);
-        attributes[NAME].setValue(Name);
-        attributes[BUILDING_AREA].setValue(building_area);
-
-        attributes[ACCESSIBLE].setValue(accessible);
-        attributes[STATUS].setValue(status);
+    public Facility(String id, String name, double building_size, boolean accessible, Status status) throws Exception {
+        this.id = id;
+        this.name = name;
+        this.building_size = building_size;
+        this.accessible = accessible;
+        this.status = status;
     }
 
-    public void addServiceContract(ServiceContract serviceContract) {
-        List<ServiceContract> serviceContractList = (List<ServiceContract>) this.attributes[SERVICE_CONTRACTS].getValue();
-        serviceContractList.add(serviceContract);
-    }
-
-    public void setServiceContractList(List<ServiceContract> neueWartungsauftraege) throws Exception {
-        attributes[SERVICE_CONTRACTS].setValue(neueWartungsauftraege);
-    }
-
-    public void addEmployee(Employee employee) {
-        List<Employee> assignedEmployee = (List<Employee>) this.attributes[ASSIGNED_EMPLOYEES].getValue();
-        assignedEmployee.add(employee);
-    }
 
     @Override
     public String toString() {
         StringBuilder objectStringBuilder = new StringBuilder();
         objectStringBuilder.append("Anlage: {\n");
-        objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(this.attributes));
-        objectStringBuilder.append(String.format("\tWartungsaufträge: %s\n", this.attributes[SERVICE_CONTRACTS].getValue()));
-        objectStringBuilder.append(String.format("\tZugewiesene Mitarbeiter: %s\n", this.attributes[ASSIGNED_EMPLOYEES].getValue()));
+        objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(getAttributeArray()));
+        objectStringBuilder.append(String.format("\tService Contracts: %s\n", serviceContracts));
+        objectStringBuilder.append(String.format("\tAssigned Employees: %s\n", assignedEmployees));
+        objectStringBuilder.append(String.format("\tElectronical Devices: %s\n", electronicalDevices));
         objectStringBuilder.append("}");
 
         return objectStringBuilder.toString();
@@ -78,12 +65,26 @@ public class Facility implements IDepictable, IPersistable {
 
     @Override
     public Attribute[] getAttributeArray() {
-        return attributes;
+        return new Attribute[] {
+                new Attribute("ID", this, String.class, id, "unknown", true),
+                new Attribute("Name", this, String.class, name, "unknown", true),
+                new Attribute("Building Size", this, Double.class, building_size, "unknown", true),
+                new Attribute("Water Usage", this, Double.class, water_usage, 0, true),
+                new Attribute("Power Usage", this, Double.class, power_usage, 0, true),
+                new Attribute("Accessible", this, Boolean.class, accessible, false, true),
+                new Attribute("Opening Hours", this, String.class, opening_hours, "unknown", true),
+                new Attribute("Status", this, Status.class, status, Status.CLOSED, true),
+                new Attribute("Description", this, String.class, description, "unknown", true),
+
+                new Attribute("Service Contracts", this, List.class, serviceContracts, new ArrayList<ServiceContract>(), true),
+                new Attribute("Assigned Employee", this, List.class, assignedEmployees, new ArrayList<Employee>(), true),
+                new Attribute("Electronical Devices", this, List.class, electronicalDevices, new ArrayList<ElectronicalDevice>(), true)
+        };
     }
 
     @Override
     public String getElementID() {
-        return (String) attributes[ID].getValue();
+        return id;
     }
 
     @Override

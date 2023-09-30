@@ -1,6 +1,6 @@
 package model.properties;
 
-public enum availableRessource {
+public enum AvailableRessource {
 
     ELECTRICITY,
     GAS,

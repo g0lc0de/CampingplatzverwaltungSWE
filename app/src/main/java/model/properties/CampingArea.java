@@ -2,6 +2,7 @@ package model.properties;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
+import util.AttributeUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.List;
 public class CampingArea implements IDepictable {
     private String ID;
     private String lagebeschreibung, name;
-    public static final int LAGEBESCHREIBUNG = 0;
-    public static final int NAME = 1;
-    public static final int STELLPLATZLIST = 2;
+    public static final int
+            LAGEBESCHREIBUNG = 0,
+            NAME = 1,
+            STELLPLATZLIST = 2;
     private List<CampingSpace> campingSpaceList;
 
 
@@ -41,5 +43,15 @@ public class CampingArea implements IDepictable {
                 new Attribute("name", this, String.class, name, "", true),
                 new Attribute("stellplatzList", this, List.class, campingSpaceList, null, true)
         };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder objectStringBuilder = new StringBuilder();
+        objectStringBuilder.append("Camping Area: {\n");
+        objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(getAttributeArray()));
+        objectStringBuilder.append("}");
+
+        return objectStringBuilder.toString();
     }
 }

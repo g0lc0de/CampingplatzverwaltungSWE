@@ -1,4 +1,4 @@
-package utils;
+package util;
 
 
 import de.dhbwka.swe.utils.model.Attribute;
@@ -22,6 +22,12 @@ public class AttributeUtilities {
         for (Attribute attr : attributeArray) {
             if (!(attr.getValue() instanceof List)) {
                 stringBuilder.append(String.format("\t|%-12s |%-10s |\n",attr.getName(), attr.getValue()));
+            }
+        }
+
+        for (Attribute attr : attributeArray) {
+            if ((attr.getValue() instanceof List)) {
+                stringBuilder.append(String.format("\t%s: %s\n", attr.getName(), attr.getValue()));
             }
         }
 

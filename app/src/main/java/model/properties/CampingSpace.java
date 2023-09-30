@@ -2,7 +2,7 @@ package model.properties;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
-import utils.AttributeUtilities;
+import util.AttributeUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +20,17 @@ public class CampingSpace implements IDepictable {
 			new Attribute("Reserved", this, Boolean.class, false	, false, true),
 
 			new Attribute("Space Suitability List", this,  List.class, new ArrayList<SpaceSuitability>(), new ArrayList<SpaceSuitability>(),true),
-			new Attribute("Available Ressource List", this,  List.class, new ArrayList<availableRessource>(), new ArrayList<availableRessource>(),true),
+			new Attribute("Available Ressource List", this,  List.class, new ArrayList<AvailableRessource>(), new ArrayList<AvailableRessource>(),true),
 	};
 
 	public CampingSpace(String IDParam, boolean reserved) throws Exception {
-		this(IDParam, 100, new ArrayList<SpaceSuitability>(), new ArrayList<availableRessource>(), reserved);
+		this(IDParam, 100, new ArrayList<SpaceSuitability>(), new ArrayList<AvailableRessource>(), reserved);
 	}
-	public CampingSpace(String IDParam, double groesse, List<SpaceSuitability> spaceSuitabilities, List<availableRessource> availableRessourcen) throws Exception {
+	public CampingSpace(String IDParam, double groesse, List<SpaceSuitability> spaceSuitabilities, List<AvailableRessource> availableRessourcen) throws Exception {
 		this(IDParam, groesse, spaceSuitabilities, availableRessourcen, false);
 	}
 
-	public CampingSpace(String IDParam, double groesse, List<SpaceSuitability> spaceSuitabilities, List<availableRessource> availableRessourcen, boolean reserviert) throws Exception {
+	public CampingSpace(String IDParam, double groesse, List<SpaceSuitability> spaceSuitabilities, List<AvailableRessource> availableRessourcen, boolean reserviert) throws Exception {
 		super();
 		this.attributes[CampingSpace.ID].setValue(IDParam);
 		this.attributes[CampingSpace.AREA].setValue(groesse);
@@ -64,18 +64,18 @@ public class CampingSpace implements IDepictable {
 		return (List<SpaceSuitability>) this.attributes[SPACESUITABILITY_LIST];
 	}
 
-	public void addVerfuegbareRessourcen(availableRessource neueRessource) {
-		List<availableRessource> availableRessourcen = (List<availableRessource>) this.attributes[AVAILABLE_RESSOURCES_LIST].getValue();
+	public void addVerfuegbareRessourcen(AvailableRessource neueRessource) {
+		List<AvailableRessource> availableRessourcen = (List<AvailableRessource>) this.attributes[AVAILABLE_RESSOURCES_LIST].getValue();
 		availableRessourcen.add(neueRessource);
 	}
 
-	public void removeVerfuegbareRessourcen(availableRessource entfernendeRessource) {
-		List<availableRessource> availableRessourcen = (List<availableRessource>) this.attributes[AVAILABLE_RESSOURCES_LIST].getValue();
+	public void removeVerfuegbareRessourcen(AvailableRessource entfernendeRessource) {
+		List<AvailableRessource> availableRessourcen = (List<AvailableRessource>) this.attributes[AVAILABLE_RESSOURCES_LIST].getValue();
 		availableRessourcen.remove(entfernendeRessource);
 	}
 
-	public List<availableRessource> getVerfuegbareRessourcen() {
-		return (List<availableRessource>) this.attributes[AVAILABLE_RESSOURCES_LIST].getValue();
+	public List<AvailableRessource> getVerfuegbareRessourcen() {
+		return (List<AvailableRessource>) this.attributes[AVAILABLE_RESSOURCES_LIST].getValue();
 	}
 
 	public Attribute[] getAttributeArray() {
@@ -91,8 +91,6 @@ public class CampingSpace implements IDepictable {
 		StringBuilder objectStringBuilder = new StringBuilder();
 		objectStringBuilder.append("Stellplatz: {\n");
 		objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(this.attributes));
-		objectStringBuilder.append(String.format("\tSpace Suitabilities: %s\n", this.attributes[SPACESUITABILITY_LIST].getValue()));
-		objectStringBuilder.append(String.format("\tVerfuegbareRessourcen: %s\n", this.attributes[AVAILABLE_RESSOURCES_LIST].getValue()));
 		objectStringBuilder.append("}");
 
 		return objectStringBuilder.toString();
