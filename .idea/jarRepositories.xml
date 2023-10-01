@@ -12,6 +12,11 @@
       <option name="url" value="https://iai-artifactory.iai.kit.edu/artifactory/webis-public" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="mvn-repository" />
+      <option name="name" value="mvn-repository" />
+      <option name="url" value="https://mvnrepository.com/artifact/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="webis-public" />
       <option name="name" value="webis-public" />
       <option name="url" value="https://iai-artifactory.iai.kit.edu/artifactory/webis-public/" />

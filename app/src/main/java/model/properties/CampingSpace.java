@@ -2,12 +2,13 @@ package model.properties;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
+import de.dhbwka.swe.utils.model.IPersistable;
 import util.AttributeUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CampingSpace implements IDepictable {
+public class CampingSpace implements IDepictable, IPersistable {
 	
 	public final static int ID = 0;
 	public final static int AREA = 1;
@@ -22,6 +23,11 @@ public class CampingSpace implements IDepictable {
 			new Attribute("Space Suitability List", this,  List.class, new ArrayList<SpaceSuitability>(), new ArrayList<SpaceSuitability>(),true),
 			new Attribute("Available Ressource List", this,  List.class, new ArrayList<AvailableRessource>(), new ArrayList<AvailableRessource>(),true),
 	};
+
+	@Override
+	public String getVisibleText() {
+		return attributes[ID].getValue().toString();
+	}
 
 	public CampingSpace(String IDParam, boolean reserved) throws Exception {
 		this(IDParam, 100, new ArrayList<SpaceSuitability>(), new ArrayList<AvailableRessource>(), reserved);
@@ -94,5 +100,10 @@ public class CampingSpace implements IDepictable {
 		objectStringBuilder.append("}");
 
 		return objectStringBuilder.toString();
+	}
+
+	@Override
+	public Object getPrimaryKey() {
+		return attributes[ID].getValue();
 	}
 }

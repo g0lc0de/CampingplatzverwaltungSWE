@@ -30,6 +30,8 @@ public class Person implements IDepictable, IPersistable {
     private Address address;
 
     public Person(String LastName, String FirstName) {
+        firstName = FirstName;
+        lastName = LastName;
     }
 
     @Override

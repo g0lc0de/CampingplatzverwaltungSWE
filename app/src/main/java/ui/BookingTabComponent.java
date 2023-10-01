@@ -1,19 +1,24 @@
 package ui;
 
+import de.dhbwka.swe.utils.event.EventCommand;
 import de.dhbwka.swe.utils.event.IUpdateEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
+import de.dhbwka.swe.utils.model.IPersistable;
+import model.accounting.Booking;
 import model.properties.SpaceSuitability;
 
 import org.jdatepicker.impl.DateComponentFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import util.EntityManagerHolder;
 import util.StaticSourceNames;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -21,12 +26,41 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
 
     private UtilDateModel modelTo, modelFrom;
     private JDatePickerImpl datePickerFrom, datePickerTo;
-    private List<IDepictable> bookings;
+    private List<IDepictable> bookings = new ArrayList<>();
     public ExtendedListComponent extendedBookingListComponent;
     public BookingDetailComponent bookingDetailComponent;
 
-    public BookingTabComponent(List<IDepictable> bookings) throws Exception {
-        this.bookings = bookings;
+
+    public enum Commands implements EventCommand {
+
+        BOOKING_ADDED("BookingTabComponent.bookingAdded", Booking.class);
+
+        String cmdText;
+        Class<?> payloadType;
+
+        Commands(String cmdText, Class<?> payloadType) {
+            this.cmdText = cmdText;
+            this.payloadType = payloadType;
+        }
+
+        @Override
+        public String getCmdText() {
+            return cmdText;
+        }
+
+        @Override
+        public Class<?> getPayloadType() {
+            return payloadType;
+        }
+    }
+    public BookingTabComponent() throws Exception {
+
+        List<IPersistable> persistables = EntityManagerHolder.getInstance().getEntityManager().findAll(Booking.class);
+        for (IPersistable persitable :
+                persistables) {
+            bookings.add((IDepictable) persitable);
+        }
+
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 0;

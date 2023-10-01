@@ -26,6 +26,16 @@ public class Address implements IDepictable, IPersistable {
     private String zipCode;
     private String city;
 
+    public Address(String id, Country country, String street, String housingNumber, String additionalLine, String zipCode, String city) {
+        this.id = id;
+        this.country = country;
+        this.street = street;
+        this.housingNumber = housingNumber;
+        this.additionalLine = additionalLine;
+        this.zipCode = zipCode;
+        this.city = city;
+    }
+
     @Override
     public String getElementID() {
         return id;

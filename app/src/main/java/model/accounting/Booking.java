@@ -54,6 +54,25 @@ public class Booking implements IDepictable, IPersistable {
     private CampingSpace assignedCampingSpace;
     private List<RentableEquipment> rentedEquipment;
 
+    public Booking(String id, Date arrivalDate, Date departureDate, Person personResponsible, int numberAdult, int numberChildren, String licensePlate, boolean isReservation, double price, Invoice bookingInvoice, Document bookingConfirmation, Person guest, ChipCard chipCard, List<SpaceSuitability> broughtGear, CampingSpace assignedCampingSpace, List<RentableEquipment> rentedEquipment) {
+        this.id = id;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.personResponsible = personResponsible;
+        this.numberAdult = numberAdult;
+        this.numberChildren = numberChildren;
+        this.licensePlate = licensePlate;
+        this.isReservation = isReservation;
+        this.price = price;
+        this.bookingInvoice = bookingInvoice;
+        this.bookingConfirmation = bookingConfirmation;
+        this.guest = guest;
+        this.chipCard = chipCard;
+        this.broughtGear = broughtGear;
+        this.assignedCampingSpace = assignedCampingSpace;
+        this.rentedEquipment = rentedEquipment;
+    }
+
     public Booking() {
         arrivalDate = Date.from(between(Instant.now().minusSeconds(60*60*24*365*10),Instant.now()));
         departureDate = Date.from(between(Instant.now().minusSeconds(60*60*24*365*10),Instant.now()));

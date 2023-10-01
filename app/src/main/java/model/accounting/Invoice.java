@@ -36,6 +36,10 @@ public class Invoice extends Document implements IDepictable, IPersistable {
         super();
     }
 
+    public Invoice(Address address){
+        this.invoiceAddress = address;
+    }
+
     public Attribute[] getAttributeArray() {
         Attribute[] personAttributes = super.getAttributeArray();
         Attribute[] newAttributes = new Attribute[]{

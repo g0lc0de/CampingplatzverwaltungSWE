@@ -3,13 +3,17 @@ package controller;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
+import de.dhbwka.swe.utils.model.IPersistable;
 import de.dhbwka.swe.utils.util.BaseController;
 import model.accounting.Booking;
 import ui.BookingDetailComponent;
 import ui.BookingTabComponent;
 import ui.ExtendedListComponent;
+import util.EntityManagerHolder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class BookingTabController extends BaseController {
@@ -25,16 +29,17 @@ public class BookingTabController extends BaseController {
     public BookingTabComponent getComponent() {
         return component;
     }
+    public main.java.ui.CreateBookingComponent createBookingComponent;
 
-    private List<IDepictable> bookings = Arrays.asList(
-            new Booking(),
-            new Booking(),
-            new Booking(),
-            new Booking()
-    );
+    private List<IDepictable> bookings = new ArrayList<>();
 
     public BookingTabController() throws Exception {
-        component = new BookingTabComponent(bookings);
+        Booking booking = new Booking();
+        booking.setArrivalDate(new Date());
+        booking.setDepartureDate(new Date());
+        EntityManagerHolder.getInstance().getEntityManager().persist(booking);
+
+        component = new BookingTabComponent();
         addObserver(component);
         component.addObserver(this);
 

@@ -8,6 +8,7 @@ import de.dhbwka.swe.utils.util.BaseController;
 import model.properties.CampingArea;
 import model.properties.CampingSpace;
 import ui.*;
+import util.EntityManagerHolder;
 import util.StaticSourceNames;
 
 import java.util.Arrays;
@@ -52,6 +53,17 @@ public class OverviewTabController extends BaseController implements IGUIEventLi
     }
 
     public OverviewTabController() throws Exception {
+
+        for (CampingSpace campingSpace :
+                campingSpaceList) {
+            EntityManagerHolder.getInstance().getEntityManager().persist(campingSpace);
+        }
+
+        for (CampingSpace campingSpace :
+                campingSpaceList2) {
+            EntityManagerHolder.getInstance().getEntityManager().persist(campingSpace);
+        }
+
 
         component = new OverviewTabComponent(oberbereichList);
         component.addObserver(this);

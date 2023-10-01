@@ -3,6 +3,7 @@ package ui;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
+import main.java.ui.CreateBookingComponent;
 import util.StaticSourceNames;
 
 import javax.swing.*;
@@ -74,7 +75,11 @@ public class OverviewTabComponent extends ObservableComponent implements IUpdate
         listHolder.setBorder(new LineBorder(Color.pink));
         middlePanelHolder.add(HeaderComponent.createHeaderComponent(listHolder, "Oberbereiche"));
         JPanel buttonPanel = new JPanel(new GridLayout(4,1));
-        buttonPanel.add(new JButton("Buchung anlegen"));
+        JButton createBookingButton = new JButton("Buchung anlegen");
+        buttonPanel.add(createBookingButton);
+        createBookingButton.addActionListener(e -> {
+            new CreateBookingComponent();
+        });
         buttonPanel.add(new JButton("Buchung einseihen"));
         buttonPanel.add(new JButton("Mitarbeiter ansehen"));
         buttonPanel.add(new JButton("Daten verwalten"));
