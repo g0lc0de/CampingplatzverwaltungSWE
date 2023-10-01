@@ -1,28 +1,34 @@
-package model.accounting;
+package model.properties;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.model.IPersistable;
+import model.accounting.Account;
+import model.accounting.InvoicePosition;
+import model.hr.Address;
 import util.AttributeUtilities;
 
 import java.util.Date;
+import java.util.List;
 
-public class Document implements IDepictable, IPersistable {
+public class Region implements IDepictable, IPersistable {
 
     public static int
         ID = 0,
-        NAME = 1,
-        CREATION_DATE = 2,
-        LAST_MODIFIED_DATE = 3;
+        DESCRIPTION = 1,
+        NAME = 2,
+        CAMPING_AREAS = 3;
 
     private String id;
+    private String description;
     private String name;
-    private Date creationDate;
-    private Date lastModified;
+    private List<CampingArea> campingAreas;
 
-    public Document(String id, String name) {
+    public Region(String id, String description, String name, List<CampingArea> campingAreas) {
         this.id = id;
+        this.description = description;
         this.name = name;
+        this.campingAreas = campingAreas;
     }
 
     @Override
@@ -33,10 +39,10 @@ public class Document implements IDepictable, IPersistable {
     @Override
     public Attribute[] getAttributeArray() {
         return new Attribute[]{
-                new Attribute("ID", this, String.class, id, "", true),
+                new Attribute("ID", this, String.class, id, "unknown", true),
+                new Attribute("Description", this, String.class, description, "unknown", true),
                 new Attribute("Name", this, String.class, name, "unknown", true),
-                new Attribute("Creation Date", this, Date.class, creationDate, "unknown", true),
-                new Attribute("Last Modified Date", this, Date.class, lastModified, "unknown", true)
+                new Attribute("Camping Areas", this, List.class, campingAreas, "unknown", true),
         };
     }
 
@@ -48,7 +54,7 @@ public class Document implements IDepictable, IPersistable {
     @Override
     public String toString() {
         StringBuilder objectStringBuilder = new StringBuilder();
-        objectStringBuilder.append("Document: {\n");
+        objectStringBuilder.append("Region: {\n");
         objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(getAttributeArray()));
         objectStringBuilder.append("}");
 

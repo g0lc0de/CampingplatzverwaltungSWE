@@ -3,7 +3,7 @@ package ui;
 import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
-import main.java.ui.CreateBookingComponent;
+import org.w3c.dom.events.UIEvent;
 import util.StaticSourceNames;
 
 import javax.swing.*;
@@ -15,8 +15,8 @@ public class OverviewTabComponent extends ObservableComponent implements IUpdate
 
     public enum Commands implements EventCommand {
 
-        TEXT_CHANGED("UebersichtTabComponent.textChanged", String.class);
-
+        TEXT_CHANGED("UebersichtTabComponent.textChanged", String.class),
+        BUCHUNG_ANLEGEN("UebersichtTabComponent.buchungAnlegen", String.class);
         String cmdText;
         Class<?> payloadType;
 
@@ -46,26 +46,24 @@ public class OverviewTabComponent extends ObservableComponent implements IUpdate
         return campingAreaDetailComponent;
     }
 
-    private List<IDepictable> oberbereiche;
+    private List<IDepictable> campingAreas;
+    private List<IDepictable> regions;
+    public OverviewTabComponent(List<IDepictable> regions) throws Exception {
 
-    public OverviewTabComponent(List<IDepictable> oberbereiche) throws Exception {
-
-        this.oberbereiche = oberbereiche;
-        this.campingAreaDetailComponent = new CampingAreaDetailComponent(oberbereiche.get(0));
+        this.regions = regions;
+        this.campingAreaDetailComponent = new CampingAreaDetailComponent(regions.get(0));
 
         oberbereichListComponent.addSourceName(StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST);
-        oberbereichListComponent.addIDepictables(oberbereiche);
+        oberbereichListComponent.addIDepictables(regions);
 
         GridLayout gridLayout = new GridLayout(1, 3);
         this.setLayout(gridLayout);
 
         JPanel mapPanel = new JPanel(new BorderLayout());
-        JButton oberbereichNordPanel = new JButton("Oberbereich Nord");
+        JButton oberbereichNordPanel = new JButton("Region Lakeside");
         mapPanel.add(oberbereichNordPanel, BorderLayout.NORTH);
-        JButton oberbereichMittePanel = new JButton("Oberbereich Mitte");
-        mapPanel.add(oberbereichMittePanel, BorderLayout.CENTER);
-        JButton oberbereichSuedPanel = new JButton("Oberbereich Süd");
-        mapPanel.add(oberbereichSuedPanel, BorderLayout.SOUTH);
+        JButton oberbereichSuedPanel = new JButton("Region Magic Forest");
+        mapPanel.add(oberbereichSuedPanel, BorderLayout.CENTER);
 
         this.add(mapPanel);
 
@@ -73,16 +71,30 @@ public class OverviewTabComponent extends ObservableComponent implements IUpdate
         JPanel listHolder = new JPanel(new BorderLayout());
         listHolder.add(oberbereichListComponent.build(), BorderLayout.CENTER);
         listHolder.setBorder(new LineBorder(Color.pink));
-        middlePanelHolder.add(HeaderComponent.createHeaderComponent(listHolder, "Oberbereiche"));
+        middlePanelHolder.add(HeaderComponent.createHeaderComponent(listHolder, "Regions"));
         JPanel buttonPanel = new JPanel(new GridLayout(4,1));
         JButton createBookingButton = new JButton("Buchung anlegen");
+        createBookingButton.setFont(new Font("Sans Serif", Font.BOLD,24));
+        createBookingButton.setBackground(Color.WHITE);
         buttonPanel.add(createBookingButton);
         createBookingButton.addActionListener(e -> {
-            new CreateBookingComponent();
+            fireGUIEvent(new GUIEvent(this, Commands.BUCHUNG_ANLEGEN));
+//            new CreateBookingComponent();
         });
-        buttonPanel.add(new JButton("Buchung einseihen"));
-        buttonPanel.add(new JButton("Mitarbeiter ansehen"));
-        buttonPanel.add(new JButton("Daten verwalten"));
+        JButton buchungEinsehenButton = new JButton("Buchung einseihen");
+        buchungEinsehenButton.setFont(new Font("Sans Serif", Font.BOLD,24));
+        buchungEinsehenButton.setBackground(Color.WHITE);
+        buttonPanel.add(buchungEinsehenButton);
+
+        JButton mitarbeiterAnsehen = new JButton("Mitarbeiter ansehen");
+        buttonPanel.add(mitarbeiterAnsehen);
+        mitarbeiterAnsehen.setFont(new Font("Sans Serif", Font.BOLD,24));
+        mitarbeiterAnsehen.setBackground(Color.WHITE);
+
+        JButton datenVerwalten = new JButton("Daten verwalten");
+        datenVerwalten.setFont(new Font("Sans Serif", Font.BOLD,24));
+        datenVerwalten.setBackground(Color.WHITE);
+        buttonPanel.add(datenVerwalten);
         middlePanelHolder.add(buttonPanel);
         this.add(middlePanelHolder);
 

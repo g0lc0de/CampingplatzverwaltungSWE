@@ -15,8 +15,11 @@ import java.awt.*;
 public class BookingDetailComponent extends ObservableComponent implements IUpdateEventListener {
 
     IDepictable booking;
+
+    JLabel bookingHeaderLabel;
     JLabel bookingArrivalDateLabel;
     JLabel bookingDepartureDateLabel;
+    JLabel adultsLabel;
 
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
@@ -50,14 +53,18 @@ public class BookingDetailComponent extends ObservableComponent implements IUpda
     }
 
     private void fillLabels(){
-        bookingArrivalDateLabel.setText(booking.getAttributeArray()[Booking.ARRIVAL_DATE].getValue().toString());
-        bookingDepartureDateLabel.setText(booking.getAttributeArray()[Booking.DEPARTURE_DATE].getValue().toString());
+        bookingHeaderLabel.setText(String.format("Booking %s",booking.getAttributeArray()[Booking.ID].getValue()));
+        bookingArrivalDateLabel.setText(String.format("Arrival: %s", booking.getAttributeArray()[Booking.ARRIVAL_DATE].getValue().toString()));
+        bookingDepartureDateLabel.setText(String.format("Departure: %s", booking.getAttributeArray()[Booking.DEPARTURE_DATE].getValue().toString()));
+        adultsLabel.setText(String.format("Adults: %s", booking.getAttributeArray()[Booking.NUMBER_ADULTS].getValue().toString()));
     }
     public BookingDetailComponent(IDepictable iDepictable) {
         this.booking = iDepictable;
         this.setLayout(new BorderLayout());
+        bookingHeaderLabel = new JLabel();
         bookingArrivalDateLabel = new JLabel();
         bookingDepartureDateLabel = new JLabel();
+        adultsLabel = new JLabel();
         fillLabels();
         this.setBorder(new LineBorder(Color.green, 2));
 
@@ -72,13 +79,15 @@ public class BookingDetailComponent extends ObservableComponent implements IUpda
 
         topPanel.add(UserInterfaceUtils.getHeaderLabel("Details"), gridBagConstraints);
 
-        bookingArrivalDateLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        bookingHeaderLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
         gridBagConstraints.gridy = 1;
+        topPanel.add(bookingHeaderLabel, gridBagConstraints);
+        gridBagConstraints.gridy += 1;
         topPanel.add(bookingArrivalDateLabel, gridBagConstraints);
         gridBagConstraints.gridy += 1;
         topPanel.add(bookingDepartureDateLabel, gridBagConstraints);
         gridBagConstraints.gridy += 1;
-        topPanel.add(new JLabel("40% Auslastung"), gridBagConstraints);
+        topPanel.add(adultsLabel, gridBagConstraints);
     }
 
 

@@ -21,6 +21,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 public class BookingTabComponent extends ObservableComponent implements IUpdateEventListener {
 
@@ -28,9 +29,10 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
     private JDatePickerImpl datePickerFrom, datePickerTo;
     private List<IDepictable> bookings = new ArrayList<>();
     public ExtendedListComponent extendedBookingListComponent;
+    private ExtendedListComponent currentBookingList;
     public BookingDetailComponent bookingDetailComponent;
 
-
+    JPanel contentPanel = new JPanel(new GridLayout(1,2));
     public enum Commands implements EventCommand {
 
         BOOKING_ADDED("BookingTabComponent.bookingAdded", Booking.class);
@@ -53,13 +55,8 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
             return payloadType;
         }
     }
-    public BookingTabComponent() throws Exception {
-
-        List<IPersistable> persistables = EntityManagerHolder.getInstance().getEntityManager().findAll(Booking.class);
-        for (IPersistable persitable :
-                persistables) {
-            bookings.add((IDepictable) persitable);
-        }
+    public BookingTabComponent(List<IDepictable> bookingList) throws Exception {
+        System.out.printf("BOOKING LIST %d \n", bookingList.size());
 
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -72,10 +69,11 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
         JPanel filterPanel = createFilterPanel();
         this.add(filterPanel, gridBagConstraints);
 
-        JPanel contentPanel = new JPanel(new GridLayout(1,2));
+
         extendedBookingListComponent = new ExtendedListComponent();
         extendedBookingListComponent.addSourceName(StaticSourceNames.BOOKINGS_TAB_EXTENDED_LIST);
-        extendedBookingListComponent.addIDepictables(bookings);
+        setBookings(bookingList);
+
 
         contentPanel.add(extendedBookingListComponent.build());
         bookingDetailComponent = new BookingDetailComponent(bookings.get(0));
@@ -84,6 +82,14 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
         gridBagConstraints.gridy = 1;
         gridBagConstraints.weighty = 2;
         this.add(contentPanel, gridBagConstraints);
+    }
+
+    public void setBookings(List<IDepictable> bookings) {
+        this.bookings = bookings;
+        System.out.printf("Bookings: %d\n", this.bookings.size());
+        System.out.println(this.bookings);
+        extendedBookingListComponent.rerenderIDepictables(this.bookings);
+        contentPanel.revalidate();
     }
 
     private JPanel createFilterPanel() {
@@ -117,9 +123,9 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
 
         JPanel campingAreaPanel = new JPanel(new GridLayout(2,1));
         JComboBox<String> campingAreaComboBox = new JComboBox<>();
-        campingAreaComboBox.addItem("Nord");
-        campingAreaComboBox.addItem("Süd");
-        campingAreaComboBox.addItem("Ost");
+        campingAreaComboBox.addItem("Area A");
+        campingAreaComboBox.addItem("Area B");
+        campingAreaComboBox.addItem("Area C");
         campingAreaPanel.add(new JLabel("Camping Area"));
         campingAreaPanel.add(campingAreaComboBox);
         filterPanel.add(campingAreaPanel, gridBagConstraints);
@@ -162,6 +168,7 @@ public class BookingTabComponent extends ObservableComponent implements IUpdateE
 
     @Override
     public void processUpdateEvent(UpdateEvent ue) {
-
+        System.out.println("Update Event Booking Tab");
+        System.out.println(ue);
     }
 }

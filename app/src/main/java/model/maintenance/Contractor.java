@@ -1,29 +1,28 @@
-package model.accounting;
+package model.maintenance;
 
 import de.dhbwka.swe.utils.model.Attribute;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.model.IPersistable;
+import model.accounting.Account;
 import util.AttributeUtilities;
 
+import java.time.Duration;
 import java.util.Date;
 
-public class Document implements IDepictable, IPersistable {
+public class Contractor implements IDepictable,IPersistable {
 
     public static int
         ID = 0,
         NAME = 1,
-        CREATION_DATE = 2,
-        LAST_MODIFIED_DATE = 3;
+        TELEPHONE_NUMBER = 2,
+        EMAIL = 3,
+        COMPANY_ACCOUNT = 4;
 
     private String id;
     private String name;
-    private Date creationDate;
-    private Date lastModified;
-
-    public Document(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private String telephoneNumber;
+    private String email;
+    private Account companyAccount;
 
     @Override
     public String getElementID() {
@@ -33,10 +32,11 @@ public class Document implements IDepictable, IPersistable {
     @Override
     public Attribute[] getAttributeArray() {
         return new Attribute[]{
-                new Attribute("ID", this, String.class, id, "", true),
-                new Attribute("Name", this, String.class, name, "unknown", true),
-                new Attribute("Creation Date", this, Date.class, creationDate, "unknown", true),
-                new Attribute("Last Modified Date", this, Date.class, lastModified, "unknown", true)
+                new Attribute("ID", this, String.class, id, "unknown", true),
+                new Attribute("Name", this, String.class, name, false, true),
+                new Attribute("Telephone", this, String.class, telephoneNumber, 0, true),
+                new Attribute("Email", this, String.class, email, "unknown", true),
+                new Attribute("Company Account", this, Account.class, companyAccount, "unknown", true),
         };
     }
 
@@ -48,7 +48,7 @@ public class Document implements IDepictable, IPersistable {
     @Override
     public String toString() {
         StringBuilder objectStringBuilder = new StringBuilder();
-        objectStringBuilder.append("Document: {\n");
+        objectStringBuilder.append("Contractor: {\n");
         objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(getAttributeArray()));
         objectStringBuilder.append("}");
 

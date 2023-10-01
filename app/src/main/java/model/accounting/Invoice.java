@@ -32,11 +32,8 @@ public class Invoice extends Document implements IDepictable, IPersistable {
 
     private List<InvoicePosition> invoicePositions;
 
-    public Invoice() {
-        super();
-    }
-
-    public Invoice(Address address){
+    public Invoice(String id, String name, Address address){
+        super(id, name);
         this.invoiceAddress = address;
     }
 

@@ -3,12 +3,31 @@ package controller;
 import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.model.IDepictable;
+import de.dhbwka.swe.utils.model.IPersistable;
 import de.dhbwka.swe.utils.util.BaseController;
+import ui.BookingTabComponent;
 import ui.TabComponent;
+import util.EntityManagerHolder;
 
 public class TabController extends BaseController implements IGUIEventListener {
+
+    private OverviewTabController overviewTabController;
+    private SubareasTabController subareasTabController;
+    private BookingTabController bookingTabController;
+
+
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
+
+        if (guiEvent.getCmd() == BookingTabComponent.Commands.BOOKING_ADDED) {
+            System.out.println("Tab Controller GUI Event");
+            try {
+                EntityManagerHolder.getInstance().getEntityManager().persist((IPersistable) guiEvent.getData());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+            bookingTabController.refreshBooking();
+        }
 
     }
 
@@ -24,9 +43,12 @@ public class TabController extends BaseController implements IGUIEventListener {
     private TabComponent tabComponent;
 
     public void init() throws Exception {
-        OverviewTabController overviewTabController = new OverviewTabController();
-        SubareasTabController subareasTabController = new SubareasTabController();
-        BookingTabController bookingTabController = new BookingTabController();
+        MockDataCreator.createMockData();
+
+        overviewTabController = new OverviewTabController(this);
+        subareasTabController = new SubareasTabController();
+        bookingTabController = new BookingTabController();
+
         tabComponent = new TabComponent();
         tabComponent.setOverviewTabComponent(overviewTabController.getComponent());
         tabComponent.setSubareasTabComponent(subareasTabController.getComponent());

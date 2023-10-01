@@ -1,5 +1,6 @@
-package main.java.ui;
+package ui;
 
+import de.dhbwka.swe.utils.event.GUIEvent;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
@@ -38,14 +39,18 @@ public class CreateBookingComponent extends ObservableComponent {
 
     private void createFakeData(){
 
-        personList.add(new Person("Test", "Name"));
-        personList.add(new Person("Test2", "Name2"));
-        chipCardList.add(new ChipCard());
-        chipCardList.add(new ChipCard());
-        invoiceList.add(new Invoice(new Address("1", Country.DE, "Test Street", "1", "", "12345", "Teststadt")));
-        invoiceList.add(new Invoice(new Address("1", Country.EN, "Street Test", "1", "", "54321", "Hausenhausen")));
-        documentList.add(new Document());
-        documentList.add(new Document());
+        personList.add(new Person("Mustermann", "Max"));
+        personList.add(new Person("Schneider", "Romy"));
+        personList.add(new Person("Schneider", "Magdalena"));
+
+        chipCardList.add(new ChipCard("Peter"));
+        chipCardList.add(new ChipCard("Hans"));
+
+        invoiceList.add(new Invoice("I1", "Invoice1", new Address("1", Country.DE, "Test Street", "1", "", "12345", "Teststadt")));
+        invoiceList.add(new Invoice("I1", "Invoice1", new Address("1", Country.EN, "Street Test", "1", "", "54321", "Hausenhausen")));
+
+        documentList.add(new Document("Document_1", "doc1"));
+        documentList.add(new Document("Document_2", "doc2"));
     }
 
     private Date arrivalDate, departureDate;
@@ -119,7 +124,8 @@ public class CreateBookingComponent extends ObservableComponent {
         JComboBox<String> personComboBox = new JComboBox<>();
         for (Person person :
                 personList) {
-            personComboBox.addItem(String.valueOf(person.getAttributeArray()[Person.FIRST_NAME].getValue()));
+            personComboBox.addItem(
+                    String.format("%s %s", person.getAttributeArray()[Person.FIRST_NAME].getValue(), person.getAttributeArray()[Person.LAST_NAME].getValue()));
         }
         mainFrame.add(personResponsibleLabel);
         mainFrame.add(personComboBox);
@@ -139,18 +145,10 @@ public class CreateBookingComponent extends ObservableComponent {
         mainFrame.add(priceLabel);
         mainFrame.add(priceField);
 
-        JLabel invoiceLabel = new JLabel("Invoice");
-        JComboBox<String> invoiceComboBox = new JComboBox<>();
-        for (int i = 0; i < invoiceList.size(); i++) {
-            invoiceComboBox.addItem("Invoice " + (i+1));
-        }
-        mainFrame.add(invoiceLabel);
-        mainFrame.add(invoiceComboBox);
-
         JLabel chipCardLabel = new JLabel("Chip card");
         JComboBox<String> chipCardComboBox = new JComboBox<>();
         for (int i = 0; i < chipCardList.size(); i++) {
-            chipCardComboBox.addItem("Chip Card " + (i+1));
+            chipCardComboBox.addItem(String.format("%s",chipCardList.get(i).getAttributeArray()[ChipCard.NAME].getValue()));
         }
         mainFrame.add(chipCardLabel);
         mainFrame.add(chipCardComboBox);
@@ -187,25 +185,25 @@ public class CreateBookingComponent extends ObservableComponent {
             licensePlate = licencePlateField.getText();
             isReservation = isReservationCheck.isSelected();
             price = Double.parseDouble(priceField.getText());
-            bookingInvoice = invoiceList.get(invoiceComboBox.getSelectedIndex());
-            bookingConfirmation = invoiceList.get(invoiceComboBox.getSelectedIndex());
             chipCard = chipCardList.get(chipCardComboBox.getSelectedIndex());
             broughtGear = List.of(SpaceSuitability.values()[spaceComboBox.getSelectedIndex()]);
             assignedCampingSpace = (CampingSpace) campingSpacesList.get(campingSpaceComboBox.getSelectedIndex());
 
             Booking booking = new Booking("id", arrivalDate, departureDate, personResponsible, numberAdult, numberChildren, licensePlate, isReservation, price, bookingInvoice, bookingConfirmation, personResponsible, chipCard, broughtGear, assignedCampingSpace, null);
+            System.out.printf("Booking created!!!\n");
             try {
-                EntityManagerHolder.getInstance().getEntityManager().persist(booking);
-                fireUpdateEvent(new UpdateEvent(this, BookingTabComponent.Commands.BOOKING_ADDED, booking));
+                fireGUIEvent(new GUIEvent(this, BookingTabComponent.Commands.BOOKING_ADDED, booking));
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
+
+            mainFrame.dispose();
         });
 
         mainFrame.setSize(1080, 720);
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        add(mainFrame);
+//        add(mainFrame);
 
         /*
         * private String id;

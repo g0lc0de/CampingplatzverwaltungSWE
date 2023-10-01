@@ -6,6 +6,7 @@ import de.dhbwka.swe.utils.model.IPersistable;
 import util.AttributeUtilities;
 
 import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Person implements IDepictable, IPersistable {
 
@@ -32,6 +33,7 @@ public class Person implements IDepictable, IPersistable {
     public Person(String LastName, String FirstName) {
         firstName = FirstName;
         lastName = LastName;
+        id = firstName+lastName+ ThreadLocalRandom.current().nextInt(0, 101);;
     }
 
     @Override

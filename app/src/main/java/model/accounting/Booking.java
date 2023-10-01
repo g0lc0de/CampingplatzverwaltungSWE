@@ -74,6 +74,7 @@ public class Booking implements IDepictable, IPersistable {
     }
 
     public Booking() {
+        this.id = "X54";
         arrivalDate = Date.from(between(Instant.now().minusSeconds(60*60*24*365*10),Instant.now()));
         departureDate = Date.from(between(Instant.now().minusSeconds(60*60*24*365*10),Instant.now()));
     }
@@ -142,7 +143,7 @@ public class Booking implements IDepictable, IPersistable {
     @Override
     public String toString() {
         StringBuilder objectStringBuilder = new StringBuilder();
-        objectStringBuilder.append("Anlage: {\n");
+        objectStringBuilder.append("Booking: {\n");
         objectStringBuilder.append(AttributeUtilities.convertAttributeArrayToSmallString(getAttributeArray()));
         objectStringBuilder.append("}");
 

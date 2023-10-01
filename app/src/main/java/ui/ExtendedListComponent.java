@@ -55,8 +55,10 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
 
     private String sourceName;
     private int selected = -1;
-    private List<IDepictable> iDepictables;
+    private List<IDepictable> iDepictables = new ArrayList<>();
     private List<Runnable> mouseEventFunctions = new ArrayList<>();
+
+    GridBagConstraints gbc = new GridBagConstraints();
 
     public String getSourceName() {
         return sourceName;
@@ -68,7 +70,10 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
     }
 
     public ExtendedListComponent(){
-
+        gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
     }
 
     public void selectItem(int position) {
@@ -109,39 +114,43 @@ public class ExtendedListComponent extends ObservableComponent implements IUpdat
 
     public ExtendedListComponent build() throws Exception {
         this.setLayout(new GridBagLayout());
-        System.out.println("List received:" + iDepictables.toString());
+//        System.out.println("List received:" + iDepictables.toString());
 
-        if(iDepictables == null || sourceName == null){
+        if(sourceName == null){
             throw new Exception();
         }
 
         this.setBorder(new LineBorder(Color.black, 2));
+        rerenderIDepictables(this.iDepictables);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.weightx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        return this;
+    }
 
+    public void rerenderIDepictables(List<IDepictable> iDepictableList) {
         int i = 0;
-        for (IDepictable stellbereich : iDepictables) {
-            JPanel subareaPanel = new JPanel(new BorderLayout());
-            JLabel nameLabel = new JLabel("Stellbereich " + stellbereich.getAttributeArray()[CampingSpace.ID].getValue());
-            subareaPanel.add(nameLabel, BorderLayout.NORTH);
-            subareaPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
-            int finalI = i;
-            subareaPanel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    System.out.println("clicked" + finalI);
-                    fireGUIEvent(new GUIEvent(sourceName, ExtendedListComponent.Commands.ITEM_SELECTED, finalI));
-                    highlightPanel(subareaPanel);
-                    mouseEventFunctions.forEach(Runnable::run);
-                }
-            });
-            subareaPanels.add(subareaPanel);
-            this.add(subareaPanel, gbc);
+
+        for (IDepictable id : iDepictableList) {
+            addNewIDepictable(id, i);
             i++;
         }
-        return this;
+    }
+
+    public void addNewIDepictable(IDepictable iDepictable, int index) {
+        JPanel subareaPanel = new JPanel(new BorderLayout());
+        JLabel nameLabel = new JLabel(String.format("%s", iDepictable.getAttributeArray()[CampingSpace.ID].getValue()));
+        nameLabel.setMinimumSize(new Dimension(100,30));
+        subareaPanel.add(nameLabel, BorderLayout.NORTH);
+        subareaPanel.add(new JLabel("Auslastung " + Math.round(Math.random() * 100) + "%"), BorderLayout.SOUTH);
+        subareaPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("clicked" + index);
+                fireGUIEvent(new GUIEvent(sourceName, ExtendedListComponent.Commands.ITEM_SELECTED, index));
+                highlightPanel(subareaPanel);
+                mouseEventFunctions.forEach(Runnable::run);
+            }
+        });
+        subareaPanels.add(subareaPanel);
+        this.add(subareaPanel, gbc);
     }
 }

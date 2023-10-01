@@ -5,6 +5,7 @@ import de.dhbwka.swe.utils.event.*;
 import de.dhbwka.swe.utils.gui.ObservableComponent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import model.properties.CampingArea;
+import model.properties.Region;
 import util.StaticSourceNames;
 import util.UserInterfaceUtils;
 
@@ -18,21 +19,22 @@ public class CampingAreaDetailComponent extends ObservableComponent implements I
     IDepictable oberbereich;
     JLabel oberbereichNameLabel;
     JLabel oberbereichBeschreibungLabel;
-    List<IDepictable> stellplatzList;
+    List<IDepictable> campingAreasList;
 
     @Override
     public void processUpdateEvent(UpdateEvent updateEvent) {
-        oberbereich = (CampingArea) updateEvent.getData();
+        oberbereich = (Region) updateEvent.getData();
         System.out.println(oberbereich);
-        this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[CampingArea.STELLPLATZLIST].getValue();
-        System.out.println(stellplatzList);
+        this.campingAreasList = (List<IDepictable>) oberbereich.getAttributeArray()[Region.CAMPING_AREAS].getValue();
+
         try {
-            stellbereicheListComponent.removePanels().build();
+            stellbereicheListComponent.removePanels();
+            stellbereicheListComponent.rerenderIDepictables(this.campingAreasList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        oberbereichNameLabel.setText((String) oberbereich.getAttributeArray()[CampingArea.NAME].getValue());
-        oberbereichBeschreibungLabel.setText((String) oberbereich.getAttributeArray()[CampingArea.LAGEBESCHREIBUNG].getValue());
+        oberbereichNameLabel.setText((String) oberbereich.getAttributeArray()[Region.NAME].getValue());
+        oberbereichBeschreibungLabel.setText((String) oberbereich.getAttributeArray()[Region.DESCRIPTION].getValue());
     }
 
     public enum Commands implements EventCommand {
@@ -60,9 +62,10 @@ public class CampingAreaDetailComponent extends ObservableComponent implements I
 
     public CampingAreaDetailComponent(IDepictable attributes) {
         this.oberbereich = attributes;
-        this.stellplatzList = (List<IDepictable>) oberbereich.getAttributeArray()[CampingArea.STELLPLATZLIST].getValue();
-        this.oberbereichNameLabel = new JLabel((String) oberbereich.getAttributeArray()[CampingArea.NAME].getValue());
-        this.oberbereichBeschreibungLabel = new JLabel((String) oberbereich.getAttributeArray()[CampingArea.LAGEBESCHREIBUNG].getValue());
+        this.campingAreasList = (List<IDepictable>) oberbereich.getAttributeArray()[Region.CAMPING_AREAS].getValue();
+        this.oberbereichNameLabel = new JLabel((String) oberbereich.getAttributeArray()[Region.NAME].getValue());
+        this.oberbereichBeschreibungLabel = new JLabel((String) oberbereich.getAttributeArray()[Region.DESCRIPTION].getValue());
+//        this.oberbereichBeschreibungLabel = new JLabel((String) oberbereich.getAttributeArray()[CampingArea.LAGEBESCHREIBUNG].getValue());
     }
 
     private ExtendedListComponent stellbereicheListComponent = new ExtendedListComponent();
@@ -88,16 +91,18 @@ public class CampingAreaDetailComponent extends ObservableComponent implements I
 
         topPanel.add(UserInterfaceUtils.getHeaderLabel("Details"), gridBagConstraints);
 
-        oberbereichNameLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        oberbereichNameLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
         gridBagConstraints.gridy = 1;
         topPanel.add(oberbereichNameLabel, gridBagConstraints);
         gridBagConstraints.gridy += 1;
+//        topPanel.add(oberbereichBeschreibungLabel, gridBagConstraints);
+//        gridBagConstraints.gridy += 1;
+        oberbereichBeschreibungLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
         topPanel.add(oberbereichBeschreibungLabel, gridBagConstraints);
-        gridBagConstraints.gridy += 1;
-        topPanel.add(new JLabel("40% Auslastung"), gridBagConstraints);
 
         stellbereicheListComponent.addSourceName(StaticSourceNames.OBERBEREICH_DETAILS_COMPONENT);
-        stellbereicheListComponent.addIDepictables(stellplatzList);
+        stellbereicheListComponent.removePanels();
+        stellbereicheListComponent.addIDepictables(campingAreasList);
 
         stellbereicheListComponent.addMoveEventFunction(() -> {
             TabController.getInstance().switchPage(1);

@@ -5,45 +5,25 @@ import de.dhbwka.swe.utils.event.IGUIEventListener;
 import de.dhbwka.swe.utils.event.UpdateEvent;
 import de.dhbwka.swe.utils.model.IDepictable;
 import de.dhbwka.swe.utils.util.BaseController;
+import model.accounting.Booking;
 import model.properties.CampingArea;
 import model.properties.CampingSpace;
+import model.properties.Region;
 import ui.*;
 import util.EntityManagerHolder;
 import util.StaticSourceNames;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OverviewTabController extends BaseController implements IGUIEventListener {
 
     private OverviewTabComponent component;
-    private List<CampingSpace> campingSpaceList = Arrays.asList(
-            new CampingSpace("1", false),
-            new CampingSpace("2", true),
-            new CampingSpace("3a", false),
-            new CampingSpace("4", false),
-            new CampingSpace("5", true),
-            new CampingSpace("6a", false),
-            new CampingSpace("7", false),
-            new CampingSpace("8", true),
-            new CampingSpace("9a", false)
-    );
+    private TabController tabController;
 
-    private List<CampingSpace> campingSpaceList2 = Arrays.asList(
-            new CampingSpace("11", false),
-            new CampingSpace("21", true),
-            new CampingSpace("31", false),
-            new CampingSpace("41", false),
-            new CampingSpace("51", true)
-    );
-
-    private List<IDepictable> oberbereichList = Arrays.asList(
-            new CampingArea("1", "Lorem ipsum", "O1", campingSpaceList),
-            new CampingArea("2", "Lorem ipsum a", "O2", campingSpaceList2),
-            new CampingArea("3", "Lorem ipsum aa", "O3", campingSpaceList),
-            new CampingArea("4", "Lorem ipsum aaa", "O4", campingSpaceList2)
-    );
-
+    private List<IDepictable> regions;
+    private List<IDepictable> campingAreas;
     private ExtendedListComponent oberbereichListComponent;
     private ExtendedListComponent stellbereicheListComponent;
     private CampingAreaDetailComponent campingAreaDetailComponent;
@@ -52,20 +32,13 @@ public class OverviewTabController extends BaseController implements IGUIEventLi
         return component;
     }
 
-    public OverviewTabController() throws Exception {
+    public OverviewTabController(TabController tabController) throws Exception {
+        this.tabController = tabController;
 
-        for (CampingSpace campingSpace :
-                campingSpaceList) {
-            EntityManagerHolder.getInstance().getEntityManager().persist(campingSpace);
-        }
+        this.regions = getRegions();
+        this.campingAreas = getCampingAreas();
 
-        for (CampingSpace campingSpace :
-                campingSpaceList2) {
-            EntityManagerHolder.getInstance().getEntityManager().persist(campingSpace);
-        }
-
-
-        component = new OverviewTabComponent(oberbereichList);
+        component = new OverviewTabComponent(this.regions);
         component.addObserver(this);
         addObserver(component);
 
@@ -81,6 +54,19 @@ public class OverviewTabController extends BaseController implements IGUIEventLi
         addObserver(stellbereicheListComponent);
     }
 
+    private List<IDepictable> getRegions() {
+        return EntityManagerHolder.getInstance().getEntityManager().findAll(Region.class)
+                .stream()
+                .map(b -> (IDepictable) b)
+                .collect(Collectors.toList());
+    }
+
+    private List<IDepictable> getCampingAreas() {
+        return EntityManagerHolder.getInstance().getEntityManager().findAll(CampingArea.class)
+                .stream()
+                .map(b -> (IDepictable) b)
+                .collect(Collectors.toList());
+    }
 
     @Override
     public void processGUIEvent(GUIEvent guiEvent) {
@@ -90,10 +76,12 @@ public class OverviewTabController extends BaseController implements IGUIEventLi
         if (guiEvent.getCmd() == ExtendedListComponent.Commands.ITEM_SELECTED){
             System.out.println( oberbereichListComponent);
             if(guiEvent.getSource() == StaticSourceNames.UEBERSICHT_TAB_OBERBEREICHE_LIST){
-                CampingArea selected = (CampingArea) oberbereichList.get((int)guiEvent.getData());
-                System.out.println("Test");
+                Region selected = (Region) this.regions.get((int)guiEvent.getData());
                 fireUpdateEvent(new UpdateEvent(this, CampingAreaDetailComponent.Commands.OBERBEREICH_SELECTED, selected));
             }
+        } else if (guiEvent.getCmd() == OverviewTabComponent.Commands.BUCHUNG_ANLEGEN) {
+            CreateBookingComponent createBookingForm = new CreateBookingComponent();
+            createBookingForm.addObserver(tabController);
         }
     }
 }

@@ -12,44 +12,6 @@ import java.util.List;
 
 public class TabComponent extends ObservableComponent {
     private TabController controller;
-    private List<CampingSpace> campingSpaceList = Arrays.asList(
-            new CampingSpace("1", false),
-            new CampingSpace("2", true),
-            new CampingSpace("3a", false),
-            new CampingSpace("4", false),
-            new CampingSpace("5", true),
-            new CampingSpace("6a", false),
-            new CampingSpace("7", false),
-            new CampingSpace("8", true),
-            new CampingSpace("9a", false)
-    );
-
-    private List<IDepictable> iDepictableList = Arrays.asList(
-            new CampingSpace("1", false),
-            new CampingSpace("2", true),
-            new CampingSpace("3a", false),
-            new CampingSpace("4", false),
-            new CampingSpace("5", true),
-            new CampingSpace("6a", false),
-            new CampingSpace("7", false),
-            new CampingSpace("8", true),
-            new CampingSpace("9a", false)
-    );
-
-    private List<CampingSpace> campingSpaceList2 = Arrays.asList(
-            new CampingSpace("11", false),
-            new CampingSpace("21", true),
-            new CampingSpace("31", false),
-            new CampingSpace("41", false),
-            new CampingSpace("51", true)
-    );
-
-    private List<IDepictable> oberbereichList = Arrays.asList(
-            new CampingArea("1", "Lorem ipsum", "O1", campingSpaceList),
-            new CampingArea("2", "Lorem ipsum a", "O2", campingSpaceList2),
-            new CampingArea("3", "Lorem ipsum aa", "O3", campingSpaceList),
-            new CampingArea("4", "Lorem ipsum aaa", "O4", campingSpaceList2)
-    );
 
     private OverviewTabComponent overviewTabComponent;
     private SubareasTabComponent subareasTabComponent;
